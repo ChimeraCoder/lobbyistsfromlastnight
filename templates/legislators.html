@@ -18,9 +18,9 @@
   {% for person in people %}
   <li>
     <h4>
-      {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }};
+      {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }},
     {% if person['chamber'] == 'house' %}
-     district {{person['district']}})
+     {{person['state']}}-{{person['district']}})
     {% elif person['chamber'] == 'senate' %}
      {{person['district']}})
     {% endif %}
