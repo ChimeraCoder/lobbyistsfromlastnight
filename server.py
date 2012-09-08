@@ -237,7 +237,7 @@ def load_legislators(zipcode):
                 "lastname": "Ghost", 
                 "facebook_id": "pages/Casper-the-Friendly-Ghost/92386373162", 
                 "gender": "M", 
-                "twitter_id": "TheFriendlyGhost", 
+                "twitter_id": "ThFriendlyGhost", 
             })
             senators.append({
                 "district": "Junior Seat", 
