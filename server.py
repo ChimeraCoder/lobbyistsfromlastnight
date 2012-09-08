@@ -189,38 +189,58 @@ class LoginForm(Form):
 
 @app.route('/events/<cid>')
 def events_for_legislator(cid):
-    people = sunlight.congress.legislators(crp_id=cid)
-    if people and len(people) > 0:
-        person = people[0]
-    else:
-        if cid == 'N00009638':
-            person = {
-                'title' : 'President',
-                'firstname' : 'Barack',
-                'middlename' : 'Hussein',
-                'lastname' : 'Obama',
-                'party' : 'D'
-            }
-        elif cid == 'N00000286':
-            person = {
-                'title' : 'Governor',
-                'firstname' : 'Willard',
-                'middlename' : 'Mitt',
-                'lastname' : 'Romney',
-                'party' : 'R'
-            }            
-        else:
-            person = None
-
-    try:
-        events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
-    except urllib2.URLError:
-        events = []
-
+    person = person_by_cid(cid)
+    events = events_by_cid(cid)
     event_count = len(events)
 
     return render_template('events.html', events=events, person=person, event_count=event_count)
 
+def events_by_cid(cid):
+     #check the memcached cache first
+    cache_key = "events_" + cid
+    events = cache.get(cache_key)
+    breakcache = request.args.get("breakcache", None) 
+    if events is None or breakcache is not None:
+        try:
+            events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
+            cache.set(cache_key, events, MEMCACHED_TIMEOUT)
+        except urllib2.URLError:
+            events = []
+
+    return events   
+
+def person_by_cid(cid):
+    #check the memcached cache first
+    cache_key = "person_" + cid
+    person = cache.get(cache_key)
+    breakcache = request.args.get("breakcache", None) 
+    if person is None or breakcache is not None:
+        people = sunlight.congress.legislators(crp_id=cid)
+        if people and len(people) > 0:
+            person = people[0]
+        else:
+            if cid == 'N00009638':
+                person = {
+                    'title' : 'President',
+                    'firstname' : 'Barack',
+                    'middlename' : 'Hussein',
+                    'lastname' : 'Obama',
+                    'party' : 'D'
+                }
+            elif cid == 'N00000286':
+                person = {
+                    'title' : 'Governor',
+                    'firstname' : 'Willard',
+                    'middlename' : 'Mitt',
+                    'lastname' : 'Romney',
+                    'party' : 'R'
+                }            
+            else:
+                person = None
+
+        cache.set(cache_key, person, MEMCACHED_TIMEOUT)
+
+    return person
 
 @app.route('/legislators/')
 def legislators():
