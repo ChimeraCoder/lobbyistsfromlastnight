@@ -7,6 +7,7 @@ from flask import Response
 from flask import render_template
 from flask import jsonify
 from functools import wraps
+from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user, UserMixin, AnonymousUser
 import os
 import sys
 
@@ -34,6 +35,8 @@ db = MongoAlchemy(app)
 
 #TODO remove this!
 app.debug = True
+login_manager = LoginManager()
+login_manager.setup_app(app)
 
 MAX_SEARCH_RESULTS = 20
 
@@ -50,17 +53,70 @@ def authenticate():
             'You have to login with proper credentials', 401,
             {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
-        return f(*args, **kwargs)
-    return decorated
+    
+@app.route('/')
+def welcome():
+    return redirect(url_for('showCasts'))
+
+#This is called *after* the user's password is verified
+#TODO remove the redundant second query and combine it with the first
+@login_manager.user_loader
+def load_user(userid):
+    #TODO check passwords!
+    print("loading user", userid)
+
+    #check the memcached cache first
+    rv = cache.get(userid)
+    if rv is None:
+        rv = MongoUser.query.filter(MongoUser.mongo_id == userid).first()
+        cache.set(userid, rv, MEMCACHED_TIMEOUT)
+    return rv
+
+@app.route('/login/', methods = ["GET", "POST"])
+def login():
+    form = LoginForm()
+    print("testing form", request.method)
+    if form.validate_on_submit():
+        #login and validate user
+        print("logging in user?")
+        login_user(form.user)
+        flash("Logged in successfully")
+        return redirect(request.args.get("next") or url_for("showCasts"))
+    else:
+        print(form)
+        print(form.__dict__)
+
+        return render_template("login.html", form=form)
+
+
+@app.route('/signup/', methods = ["GET" , "POST"])
+def signup():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        print("registering user")
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        confirm = request.form['confirm']
+        accept_tos = request.form['accept_tos']
+        new_user = MongoUser(username = username, password = bcrypt.hashpw(password, bcrypt.gensalt()), email = email, created_at = int(time.time()))
+        new_user.save()
+        return redirect(url_for('showCasts'))
+    else:
+        return render_template("signup.html", form=form)
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return render_template("index.html", flash="unauthorized", intro_text="You need to log in to view this page")
+
+       
+@app.context_processor
+def inject_user_authenticated():
+    return dict(user_authenticated = current_user.is_authenticated())
+    
 
 @app.route('/', )
-@requires_auth
 def authorize():
     return "This is just a stub"
 
