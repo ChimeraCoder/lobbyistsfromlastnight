@@ -92,15 +92,12 @@ def load_user_by_username(username):
 @app.route('/login/', methods = ["GET", "POST"])
 def login():
     form = LoginForm()
-    print("testing form", request.method)
     if form.validate_on_submit():
         #login and validate user
         login_user(form.user)
         flash("Logged in successfully")
         return redirect(request.args.get("next") or url_for("legislators_search"))
     else:
-        print(form)
-        print(form.__dict__)
 
         return render_template("login.html", form=form)
 
@@ -120,8 +117,6 @@ def signup():
         new_user.save()
         return redirect(url_for('welcome'))
     else:
-        print(form)
-        print(form.__dict__)
         return render_template("signup.html", form=form)
 
 @app.route("/logout/")
@@ -171,7 +166,6 @@ class LoginForm(Form):
     password = PasswordField('Password', [validators.Required()])
 
     def validate(self):
-        print("attempting to validate")
         rv = Form.validate(self)
         if not rv:
             return False
@@ -180,12 +174,9 @@ class LoginForm(Form):
         user = MongoUser.query.filter(MongoUser.username == self.username.data).first()
 
         if user is None:
-            print("user is None")
             return False
         else:
-            print("user returned")
             #self.username = user.username
-            print(self.password.data)
             entered_password = self.password.data
             if bcrypt.hashpw(entered_password, user.password) == user.password:
                 #User entered the correct password
@@ -254,11 +245,11 @@ def person_by_cid(cid):
 @app.route('/legislators/search')
 def legislators_search():
     zipcode = request.args.get("zipcode", None)
-    if current_user.is_authenticated and not current_user.is_anonymous:
-        print(current_user.username)
+    if current_user.is_authenticated() and not current_user.is_anonymous():
         user = load_user_by_username(current_user.username)
         if user.zipcode and len(user.zipcode) > 4:
             zipcode = user.zipcode
+
 
     if zipcode:
         legislators = load_legislators(zipcode)
@@ -269,9 +260,11 @@ def legislators_search():
         title = "Legislators"
         return render_template('legislators_form.html', title=title)
 
+@app.route('/legislators/')
+def legislators():
+    return redirect(url_for('legislators_search'))
 
 def load_legislators(zipcode):
-    # print("loading legislators", zipcode)
 
     #check the memcached cache first
     cache_key = "zipcode_" + zipcode
