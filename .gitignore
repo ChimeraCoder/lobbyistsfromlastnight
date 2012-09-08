@@ -1,0 +1,7 @@
+*.swp
+*.pyc
+credentials.txt
+credentials.py
+mongodb/
+env/
+
