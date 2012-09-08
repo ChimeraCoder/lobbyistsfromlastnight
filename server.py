@@ -185,7 +185,6 @@ class LoginForm(Form):
             else:
                 return False
 
-
 @app.route('/legislators/')
 def legislators():
     zipcode = request.args.get("zipcode", None) 
