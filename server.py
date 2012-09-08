@@ -5,6 +5,7 @@ from flask import Flask
 from flask import request, redirect, url_for
 from flask import Response
 from flask import render_template
+from flask import flash
 from flask import jsonify
 from functools import wraps
 from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user, UserMixin, AnonymousUser
@@ -19,6 +20,7 @@ app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
 app.secret_key = os.getenv("SESSION_SECRET")
 
+from werkzeug.contrib.cache import MemcachedCache
 from flask.ext.wtf import Form, TextField, PasswordField, validators, BooleanField
 
 ###HACK THAT FIXES PYMONGO BUG
@@ -33,10 +35,12 @@ pymongo.binary = bson.binary
 sys.modules["pymongo.binary"] = bson.binary
 #### END HACK THAT WILL BE REMOVED
 
+cache = MemcachedCache([app.config['MEMCACHED_HOST'] + ":" + app.config['MEMCACHED_PORT']])
+
 from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
 db = MongoAlchemy(app)
 
-
+MEMCACHED_TIMEOUT = 10 * 60
 
 #TODO remove this!
 app.debug = True
@@ -46,19 +50,6 @@ login_manager.setup_app(app)
 MAX_SEARCH_RESULTS = 20
 
 sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
-
-
-def check_auth(username, password):
-    #TODO implement proper auth
-    return True
-
-
-def authenticate():
-    """Sends a 401 response that enables basic auth"""
-    return Response(
-            'Could not verify your access level for that URL.\n'
-            'You have to login with proper credentials', 401,
-            {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
     
 @app.route('/')
@@ -79,13 +70,21 @@ def load_user(userid):
         cache.set(userid, rv, MEMCACHED_TIMEOUT)
     return rv
 
+def load_user_by_email(username):
+    user_result = MongoUser.query(filter(MongoUser.username == username)).first()
+   
+    if user_result is not None:
+        cache.set(str(user_result.mongo_id), user_result, MEMCACHED_TIMEOUT)
+
+    return user_result
+
+
 @app.route('/login/', methods = ["GET", "POST"])
 def login():
     form = LoginForm()
     print("testing form", request.method)
     if form.validate_on_submit():
         #login and validate user
-        print("logging in user?")
         login_user(form.user)
         flash("Logged in successfully")
         return redirect(request.args.get("next") or url_for("welcome"))
@@ -115,6 +114,14 @@ def signup():
         print(form.__dict__)
         return render_template("signup.html", form=form)
 
+@app.route("/logout/")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('welcome'))
+
+
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -125,11 +132,6 @@ def unauthorized():
 def inject_user_authenticated():
     return dict(user_authenticated = current_user.is_authenticated())
     
-
-@app.route('/', )
-def authorize():
-    return "This is just a stub"
-
 
 class MongoUser(db.Document, UserMixin):
     username = db.StringField()
@@ -164,21 +166,24 @@ class LoginForm(Form):
         if not rv:
             return False
 
-        print("about to print self.username")
-        print(type(self.username))
-        print(self.username)
-
         #TODO check password
         user = MongoUser.query.filter(MongoUser.username == self.username.data).first()
+
         if user is None:
             print("user is None")
             return False
         else:
             print("user returned")
             #self.username = user.username
-            cache.set(user.mongo_id, user, MEMCACHED_TIMEOUT)
-            self.user = user
-            return True
+            print(self.password.data)
+            entered_password = self.password.data
+            if bcrypt.hashpw(entered_password, user.password) == user.password:
+                #User entered the correct password
+                cache.set(user.get_id(), user, MEMCACHED_TIMEOUT)
+                self.user = user
+                return True
+            else:
+                return False
 
 
 @app.route('/legislators/')
