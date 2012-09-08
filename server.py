@@ -190,8 +190,30 @@ class LoginForm(Form):
 
 @app.route('/events/<cid>')
 def events_for_legislator(cid):
-    person = sunlight.congress.legislators(crp_id=cid)[0]
+    people = sunlight.congress.legislators(crp_id=cid)
+    if people and len(people) > 0:
+        person = people[0]
+    else:
+        if cid == 'N00009638':
+            person = {
+                'title' : 'President',
+                'firstname' : 'Barack',
+                'middlename' : 'Hussein',
+                'lastname' : 'Obama',
+                'party' : 'D'
+            }
+        elif cid == 'N00000286':
+            person = {
+                'title' : 'Governor',
+                'firstname' : 'Willard',
+                'middlename' : 'Mitt',
+                'lastname' : 'Romney',
+                'party' : 'R'
+            }            
+        else:
+            person = None
     events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
+    print(events)
     return render_template('events.html', events=events, person=person)
 
 
