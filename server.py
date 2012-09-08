@@ -51,19 +51,6 @@ MAX_SEARCH_RESULTS = 20
 
 sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
 
-
-def check_auth(username, password):
-    #TODO implement proper auth
-    return True
-
-
-def authenticate():
-    """Sends a 401 response that enables basic auth"""
-    return Response(
-            'Could not verify your access level for that URL.\n'
-            'You have to login with proper credentials', 401,
-            {'WWW-Authenticate': 'Basic realm="Login Required"'})
-
     
 @app.route('/')
 def welcome():
@@ -145,11 +132,6 @@ def unauthorized():
 def inject_user_authenticated():
     return dict(user_authenticated = current_user.is_authenticated())
     
-
-@app.route('/', )
-def authorize():
-    return "This is just a stub"
-
 
 class MongoUser(db.Document, UserMixin):
     username = db.StringField()
