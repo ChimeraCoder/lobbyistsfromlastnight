@@ -251,6 +251,9 @@ def legislators_search():
         title = "Legislators"
         return render_template('legislators_form.html', title=title)
 
+@app.route('/legislators/')
+def legislators():
+    return redirect(url_for('legislators_search'))
 
 def load_legislators(zipcode):
 
