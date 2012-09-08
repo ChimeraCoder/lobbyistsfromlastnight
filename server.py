@@ -14,6 +14,24 @@ import sys
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
 
+
+###HACK THAT FIXES PYMONGO BUG
+#http://stackoverflow.com/questions/10401499/mongokit-importerror-no-module-named-objectid-error
+#TODO remove this once the upstream bug is fixed
+import sys 
+import pymongo
+import bson.objectid
+pymongo.objectid = bson.objectid
+sys.modules["pymongo.objectid"] = bson.objectid
+pymongo.binary = bson.binary
+sys.modules["pymongo.binary"] = bson.binary
+#### END HACK THAT WILL BE REMOVED
+
+from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
+db = MongoAlchemy(app)
+
+
+
 #TODO remove this!
 app.debug = True
 
