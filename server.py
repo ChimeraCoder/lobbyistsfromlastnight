@@ -16,6 +16,7 @@ app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
 app.secret_key = os.getenv("SESSION_SECRET")
 
+from flask.ext.wtf import Form, TextField, PasswordField, validators, BooleanField
 
 ###HACK THAT FIXES PYMONGO BUG
 #http://stackoverflow.com/questions/10401499/mongokit-importerror-no-module-named-objectid-error
@@ -120,6 +121,45 @@ def inject_user_authenticated():
 @app.route('/', )
 def authorize():
     return "This is just a stub"
+
+
+class RegistrationForm(Form):
+    username = TextField('Username', [validators.Length(min=4, max=25)])
+    email = TextField('Email Address', [validators.Length(min=6, max=35)])
+    zipcode = TextField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('New Password', [
+        validators.Required(),
+        validators.EqualTo('confirm', message='Passwords must match')
+        ])
+    confirm = PasswordField('Repeat Password')
+    accept_tos = BooleanField('I accept the TOS', [validators.Required()])
+
+class LoginForm(Form):
+    username = TextField('Username', [validators.Required()])
+    password = PasswordField('Password', [validators.Required()])
+
+    def validate(self):
+        print("attempting to validate")
+        rv = Form.validate(self)
+        if not rv:
+            return False
+
+        print("about to print self.username")
+        print(type(self.username))
+        print(self.username)
+
+        #TODO check password
+        user = MongoUser.query.filter(MongoUser.username == self.username.data).first()
+        if user is None:
+            print("user is None")
+            return False
+        else:
+            print("user returned")
+            #self.username = user.username
+            cache.set(user.mongo_id, user, MEMCACHED_TIMEOUT)
+            self.user = user
+            return True
+
 
 
 
