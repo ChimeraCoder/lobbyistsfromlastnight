@@ -245,10 +245,11 @@ def person_by_cid(cid):
 @app.route('/legislators/search')
 def legislators_search():
     zipcode = request.args.get("zipcode", None)
-    if current_user.is_authenticated() and not current_user.is_anonymous():
-        user = load_user_by_username(current_user.username)
-        if user.zipcode and len(user.zipcode) > 4:
-            zipcode = user.zipcode
+    if not zipcode:
+        if current_user.is_authenticated() and not current_user.is_anonymous():
+            user = load_user_by_username(current_user.username)
+            if user.zipcode and len(user.zipcode) > 4:
+                zipcode = user.zipcode
 
 
     if zipcode:
