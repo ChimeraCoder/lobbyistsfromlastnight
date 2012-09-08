@@ -10,7 +10,7 @@ from functools import wraps
 from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user, UserMixin, AnonymousUser
 import os
 import sys
-
+import sunlight
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -41,6 +41,8 @@ login_manager = LoginManager()
 login_manager.setup_app(app)
 
 MAX_SEARCH_RESULTS = 20
+
+sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
 
 
 def check_auth(username, password):
@@ -160,7 +162,11 @@ class LoginForm(Form):
             self.user = user
             return True
 
-
+@app.route('/legislators/')
+def legislators():
+    zipcode = "11211"
+    legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
+    return render_template('legislators.html', zipcode=zipcode, legislators=legislators)
 
 
 def search(search_query, max_results=MAX_SEARCH_RESULTS):
