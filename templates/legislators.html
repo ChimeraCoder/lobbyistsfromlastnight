@@ -5,16 +5,57 @@
 {% block intro %} 
 
 <h3>Legislators for {{ zipcode }}</h3>
+<br/>
 <ul>
 {% for person in legislators %}
   <li>
-    {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }}
+    {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})
+    <ul>
+      <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
+      <li><a href="http://votesmart.org/candidate/{{person['votesmart_id']}}" target="_blank">votesmart.org</a></li>
+    </ul>
+    <br/>
   </li>
 {% endfor %}
 </ul>
 
+<h6><a href="/legislators/">other legislators</a></h6>
+
 {% endblock %}
 
 
 {% endblock %}
 
+<!--
+        "district": "12", 
+        "title": "Rep", 
+        "eventful_id": "", 
+        "in_office": true, 
+        "state": "NY", 
+        "crp_id": "N00001102", 
+        "official_rss": "", 
+        "chamber": "house", 
+        "party": "D", 
+        "email": "", 
+        "votesmart_id": "26975", 
+        "website": "http://house.gov/velazquez/", 
+        "fax": "202-226-0327", 
+        "govtrack_id": "400416", 
+        "firstname": "Nydia", 
+        "middlename": "M.", 
+        "lastname": "Velazquez", 
+        "facebook_id": "8037068318", 
+        "congress_office": "2302 Rayburn House Office Building", 
+        "phone": "202-225-2361", 
+        "webform": "http://www.house.gov/velazquez/IMA/issue_subscribe.htm", 
+        "youtube_url": "http://www.youtube.com/nydiavelazquez", 
+        "nickname": "", 
+        "bioguide_id": "V000081", 
+        "fec_id": "H2NY00010", 
+        "gender": "F", 
+        "senate_class": "", 
+        "name_suffix": "", 
+        "twitter_id": "NydiaVelazquez", 
+        "birthdate": "1953-03-28", 
+        "congresspedia_url": "http://www.opencongress.org/wiki/Nydia_Velazquez"
+-->

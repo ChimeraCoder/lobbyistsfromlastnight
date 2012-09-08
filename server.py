@@ -11,6 +11,7 @@ from flask.ext.login import LoginManager, current_user, login_required, login_us
 import os
 import sys
 import sunlight
+import json
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -162,11 +163,17 @@ class LoginForm(Form):
             self.user = user
             return True
 
+
 @app.route('/legislators/')
 def legislators():
-    zipcode = "11211"
-    legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
-    return render_template('legislators.html', zipcode=zipcode, legislators=legislators)
+    zipcode = request.args.get("zipcode", None) 
+    if zipcode:
+        legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
+        # print(json.dumps(legislators, indent=4))
+        return render_template('legislators.html', zipcode=zipcode, legislators=legislators)
+    else:
+        return render_template('legislators_form.html')
+
 
 
 def search(search_query, max_results=MAX_SEARCH_RESULTS):
