@@ -71,8 +71,8 @@ def load_user(userid):
         cache.set(userid, rv, MEMCACHED_TIMEOUT)
     return rv
 
-def load_user_by_email(username):
-    user_result = MongoUser.query(filter(MongoUser.username == username)).first()
+def load_user_by_username(username):
+    user_result = MongoUser.query.filter(MongoUser.username == username).first()
    
     if user_result is not None:
         cache.set(str(user_result.mongo_id), user_result, MEMCACHED_TIMEOUT)
@@ -88,7 +88,7 @@ def login():
         #login and validate user
         login_user(form.user)
         flash("Logged in successfully")
-        return redirect(request.args.get("next") or url_for("welcome"))
+        return redirect(request.args.get("next") or url_for("legislators_search"))
     else:
         print(form)
         print(form.__dict__)
@@ -242,9 +242,15 @@ def person_by_cid(cid):
 
     return person
 
-@app.route('/legislators/')
-def legislators():
-    zipcode = request.args.get("zipcode", None) 
+@app.route('/legislators/search')
+def legislators_search():
+    zipcode = request.args.get("zipcode", None)
+    if current_user.is_authenticated and not current_user.is_anonymous:
+        print(current_user.username)
+        user = load_user_by_username(current_user.username)
+        if user.zipcode and len(user.zipcode) > 4:
+            zipcode = user.zipcode
+
     if zipcode:
         legislators = load_legislators(zipcode)
         # print(json.dumps(legislators, indent=4))
@@ -253,6 +259,7 @@ def legislators():
     else:
         title = "Legislators"
         return render_template('legislators_form.html', title=title)
+
 
 def load_legislators(zipcode):
     # print("loading legislators", zipcode)
