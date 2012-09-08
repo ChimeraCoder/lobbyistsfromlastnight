@@ -8,6 +8,9 @@
 <h3>Events for {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }}) </h3>
 <br/>
 <ul>
+{% if event_count < 1 %}
+  <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. </h4>
+{% endif %}
 {% for event in events %}
   <li>
     {% if event['fields']['hosts'] %}
