@@ -6,10 +6,19 @@
 
 <h3>Legislators for {{ zipcode }}</h3>
 <br/>
+
+{% for (chamber, people) in legislators.iteritems() %}
+<div style="float: left; margin-right: 50px; border-left: 1px solid rgb(223,223,223); padding-left: 50px;">
+<h3>{{chamber}}</h3>
 <ul>
-{% for person in legislators %}
+  {% for person in people %}
   <li>
-    {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})
+    {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }};
+    {% if person['chamber'] == 'house' %}
+     district {{person['district']}})
+    {% elif person['chamber'] == 'senate' %}
+     {{person['district']}})
+    {% endif %}
     <ul>
       <li><a href="/tacos/?crp_id={{person['crp_id']}}">Event Calendar</a></li>
       {% if person['twitter_id'] %}
@@ -29,9 +38,14 @@
   </li>
 {% endfor %}
 </ul>
+</div>
+{% endfor %}
 
-<h6><a href="/legislators/">other legislators</a></h6>
+<div style="clear:both;">&nbsp;</div>
 
+<h6><a href="/legislators/">legislators from other districts &raquo;</a></h6>
+
+<p>&nbsp;</p><p>&nbsp;</p>
 
 {% endblock %}
 
