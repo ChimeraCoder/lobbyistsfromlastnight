@@ -190,6 +190,21 @@ class LoginForm(Form):
 def legislators():
     zipcode = request.args.get("zipcode", None) 
     if zipcode:
+        legislators = load_legislators(zipcode)
+        # print(json.dumps(legislators, indent=4))
+        title = "Legislators for " + zipcode
+        return render_template('legislators.html', zipcode=zipcode, legislators=legislators, title=title)
+    else:
+        title = "Legislators"
+        return render_template('legislators_form.html', title=title)
+
+def load_legislators(zipcode):
+    print("loading legislators", zipcode)
+
+    #check the memcached cache first
+    cache_key = "zipcode_" + zipcode
+    legislators = cache.get(cache_key)
+    if legislators is None:
         legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
         senators = []
         representatives = []
@@ -198,14 +213,11 @@ def legislators():
                 senators.append(person)
             elif person['chamber'] == 'house':
                 representatives.append(person)
-        
         legislators = {'Senators' : senators, 'Representatives' : representatives}
-        print(json.dumps(legislators, indent=4))
-        title = "Legislators for " + zipcode
-        return render_template('legislators.html', zipcode=zipcode, legislators=legislators, title=title)
-    else:
-        title = "Legislators"
-        return render_template('legislators_form.html', title=title)
+        cache.set(cache_key, legislators, MEMCACHED_TIMEOUT)
+    # else:
+        # print("LEGS FROM CACHE")
+    return legislators
 
 
 
