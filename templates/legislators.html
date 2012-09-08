@@ -11,6 +11,10 @@
 <div style="float: left; margin-right: 50px; border-left: 1px solid rgb(223,223,223); padding-left: 50px;">
 <h3>{{chamber}}</h3>
 <ul>
+  {% if people %}
+  {% else %}
+    <i>That's odd, noone represents {{zipcode}}!</i>
+  {% endif %}
   {% for person in people %}
   <li>
     {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }};

@@ -199,12 +199,14 @@ def legislators():
         return render_template('legislators_form.html', title=title)
 
 def load_legislators(zipcode):
-    print("loading legislators", zipcode)
+    # print("loading legislators", zipcode)
 
     #check the memcached cache first
     cache_key = "zipcode_" + zipcode
     legislators = cache.get(cache_key)
-    if legislators is None:
+    breakcache = request.args.get("breakcache", None) 
+    if legislators is None or breakcache is not None:
+        # print("pulling from sunlight")
         legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
         senators = []
         representatives = []
@@ -213,6 +215,37 @@ def load_legislators(zipcode):
                 senators.append(person)
             elif person['chamber'] == 'house':
                 representatives.append(person)
+        if len(senators) == 0 and len(representatives) > 0:
+            senators.append({
+                "district": "Senior Seat", 
+                "title": "Sen", 
+                "in_office": True, 
+                "state": "DC", 
+                "crp_id": "0", 
+                "chamber": "senate", 
+                "party": "I", 
+                "firstname": "Casper", 
+                "middlename": "The Friendly", 
+                "lastname": "Ghost", 
+                "facebook_id": "pages/Casper-the-Friendly-Ghost/92386373162", 
+                "gender": "M", 
+                "twitter_id": "TheFriendlyGhost", 
+            })
+            senators.append({
+                "district": "Junior Seat", 
+                "title": "Sen", 
+                "in_office": True, 
+                "state": "DC", 
+                "crp_id": "0", 
+                "chamber": "senate", 
+                "party": "I", 
+                "firstname": "Baratunde", 
+                "middlename": "", 
+                "lastname": "Thurston", 
+                "facebook_id": "baratunde", 
+                "gender": "M", 
+                "twitter_id": "baratunde", 
+            })
         legislators = {'Senators' : senators, 'Representatives' : representatives}
         cache.set(cache_key, legislators, MEMCACHED_TIMEOUT)
     # else:
