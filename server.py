@@ -187,9 +187,11 @@ def legislators():
     if zipcode:
         legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
         # print(json.dumps(legislators, indent=4))
-        return render_template('legislators.html', zipcode=zipcode, legislators=legislators)
+        title = "Legislators for " + zipcode
+        return render_template('legislators.html', zipcode=zipcode, legislators=legislators, title=title)
     else:
-        return render_template('legislators_form.html')
+        title = "Legislators"
+        return render_template('legislators_form.html', title=title)
 
 
 

@@ -11,7 +11,18 @@
   <li>
     {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})
     <ul>
-      <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
+      <li><a href="/tacos/?crp_id={{person['crp_id']}}">Event Calendar</a></li>
+      {% if person['twitter_id'] %}
+        <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
+      {% else %}
+        <li><i>(no twitter)</i></li>
+      {% endif %}
+      {% if person['facebook_id'] %}
+        <li><a href="http://www.facebook.com/{{person['facebook_id']}}" target="_blank">facebook</a></li>
+      {% else %}
+        <li><i>(no facebook)</i></li>
+      {% endif %}
+
       <li><a href="http://votesmart.org/candidate/{{person['votesmart_id']}}" target="_blank">votesmart.org</a></li>
     </ul>
     <br/>
@@ -20,6 +31,7 @@
 </ul>
 
 <h6><a href="/legislators/">other legislators</a></h6>
+
 
 {% endblock %}
 
@@ -59,3 +71,4 @@
         "birthdate": "1953-03-28", 
         "congresspedia_url": "http://www.opencongress.org/wiki/Nydia_Velazquez"
 -->
+

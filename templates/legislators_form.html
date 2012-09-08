@@ -5,10 +5,14 @@
 {% block intro %} 
 
 <h3>What's your ZIP?</h3>
-<form>
+<form name="legislators_form">
     <input type="text" name="zipcode"/>
     <input type="submit"/>
 </form>
+
+<script type="text/javascript">
+ document.legislators_form.zipcode.focus();
+</script>
 
 {% endblock %}
 
