@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block title %} {{ title }} {% endblock %}
+
+{% block body %}
+{% block intro %} 
+
+<h3>Events for Your Congressman</h3>
+<br/>
+<ul>
+{% for event in events %}
+  <li>
+    Beneficiaries: {{ ", ".join(event['fields']["beneficiaries"]) }},
+    Location: {{ event['fields']["venue"] }},
+    Entertainment: {{ event['fields']['entertainment'] }},
+    Date: {{ event['fields']["start_date"] }},
+    Start time: {{ event['fields']['start_time'] }},
+    End time: {{ event['fields']['end_time'] }}
+  </li>
+{% endfor %}
+</ul>
+
+<h6><a href="/legislators/">other legislators</a></h6>
+
+
+{% endblock %}
+
+
+{% endblock %}
+

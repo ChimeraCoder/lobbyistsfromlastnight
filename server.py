@@ -15,6 +15,8 @@ import sunlight
 import json
 import bcrypt
 import time
+import urllib2
+import json
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -184,6 +186,12 @@ class LoginForm(Form):
                 return True
             else:
                 return False
+
+
+@app.route('/events/<cid>')
+def events_for_legislator(cid):
+    events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
+    return render_template('events.html', events=events)
 
 
 @app.route('/legislators/')
