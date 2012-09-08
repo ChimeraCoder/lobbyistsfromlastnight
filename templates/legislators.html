@@ -4,6 +4,12 @@
 {% block body %}
 {% block intro %} 
 
+<form name="legislators_form">
+    <input type="text" name="zipcode"/>
+    <button class="btn btn-info" type="submit">Search another district</button>
+</form>
+
+
 <h3>Legislators for {{ zipcode }}</h3>
 <br/>
 
