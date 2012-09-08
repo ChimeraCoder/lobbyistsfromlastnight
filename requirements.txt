@@ -6,6 +6,8 @@ Jinja2==2.6
 MongoAlchemy==0.12.1
 WTForms==1.0.2
 Werkzeug==0.8.3
+py-bcrypt==0.2
 pymongo==2.3
+python-memcached==1.48
 sunlight==1.1.5
 wsgiref==0.1.2
