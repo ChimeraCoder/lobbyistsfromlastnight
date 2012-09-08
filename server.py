@@ -14,6 +14,7 @@ import sys
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
+app.secret_key = os.getenv("SESSION_SECRET")
 
 
 ###HACK THAT FIXES PYMONGO BUG
