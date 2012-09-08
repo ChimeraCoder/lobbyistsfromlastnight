@@ -19,6 +19,7 @@
                     <ul class="nav nav-list">
                         <li class="nav-header"><a href="{{ url_for('welcome') }}">home</a></li>
                         <li><a href="{{ url_for('welcome') }}">about</a></li>
+                        <li><a href="{{ url_for('legislators') }}">your representatives</a></li>
                         {% if user_authenticated %}
                             <li><a href="/">Profile</a></li>
                             <li><a href="{{ url_for('logout') }}">logout</a></li>
