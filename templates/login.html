@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block title %} {{ title }} {% endblock %}
+
+{% block body %}
+{% block intro %} 
+
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+<form method="POST" action="/login/">
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.csrf_token) }}
+    {{ render_field(form.password) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+{% endblock %}
+
+
+{% endblock %}
+

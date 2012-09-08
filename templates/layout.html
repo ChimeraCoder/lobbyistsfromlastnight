@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>{% block title %}Welcome{% endblock %} | My Webpage</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="span4 offset6">
+                <h1 id="maintitle">Lobbyists From Last Night</h1>
+                <div id="subtitle">{% block subtitle %}Lobbyists From Last Night{% endblock %}</div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="well sidebar-nav">
+                    <ul class="nav nav-list">
+                        <li class="nav-header"><a href="{{ url_for('welcome') }}">home</a></li>
+                        <li><a href="{{ url_for('welcome') }}">about</a></li>
+                        {% if user_authenticated %}
+                            <li><a href="/">Profile</a></li>
+                            <li><a href="{{ url_for('logout') }}">logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('login') }}">login</a></li>
+                            <li><a href="{{ url_for('signup') }}">sign up</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('welcome') }}">contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span9">
+                {% block body %}
+
+                <div id="intro">{% block intro %}{% endblock %}</div> 
+
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
