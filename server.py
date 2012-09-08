@@ -190,8 +190,9 @@ class LoginForm(Form):
 
 @app.route('/events/<cid>')
 def events_for_legislator(cid):
+    person = sunlight.congress.legislators(crp_id=cid)[0]
     events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
-    return render_template('events.html', events=events)
+    return render_template('events.html', events=events, person=person)
 
 
 @app.route('/legislators/')

@@ -26,7 +26,7 @@
     {% endif %}
   </h4>
     <ul>
-      <li><a href="/tacos/?crp_id={{person['crp_id']}}">Event Calendar</a></li>
+      <li><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
       {% if person['twitter_id'] %}
         <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
       {% else %}

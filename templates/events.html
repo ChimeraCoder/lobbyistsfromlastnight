@@ -4,7 +4,8 @@
 {% block body %}
 {% block intro %} 
 
-<h3>Events for Your Congressman</h3>
+    
+<h3>Events for {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }}) </h3>
 <br/>
 <ul>
 {% for event in events %}
