@@ -57,7 +57,7 @@ def authenticate():
     
 @app.route('/')
 def welcome():
-    return redirect(url_for('showCasts'))
+    return "Hello, world"
 
 #This is called *after* the user's password is verified
 #TODO remove the redundant second query and combine it with the first
@@ -82,7 +82,7 @@ def login():
         print("logging in user?")
         login_user(form.user)
         flash("Logged in successfully")
-        return redirect(request.args.get("next") or url_for("showCasts"))
+        return redirect(request.args.get("next") or url_for("welcome"))
     else:
         print(form)
         print(form.__dict__)
@@ -102,7 +102,7 @@ def signup():
         accept_tos = request.form['accept_tos']
         new_user = MongoUser(username = username, password = bcrypt.hashpw(password, bcrypt.gensalt()), email = email, created_at = int(time.time()))
         new_user.save()
-        return redirect(url_for('showCasts'))
+        return redirect(url_for('welcome'))
     else:
         return render_template("signup.html", form=form)
 
