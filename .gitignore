@@ -4,4 +4,5 @@ credentials.txt
 credentials.py
 mongodb/
 env/
-
+lobbyist/
+virtualenv.py
