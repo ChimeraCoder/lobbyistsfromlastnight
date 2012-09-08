@@ -11,6 +11,8 @@ from flask.ext.login import LoginManager, current_user, login_required, login_us
 import os
 import sys
 import sunlight
+import bcrypt
+import time
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -102,11 +104,14 @@ def signup():
         password = request.form['password']
         email = request.form['email']
         confirm = request.form['confirm']
+        zipcode = request.form['zipcode']
         accept_tos = request.form['accept_tos']
-        new_user = MongoUser(username = username, password = bcrypt.hashpw(password, bcrypt.gensalt()), email = email, created_at = int(time.time()))
+        new_user = MongoUser(username = username, password = bcrypt.hashpw(password, bcrypt.gensalt()), email = email, zipcode=zipcode, created_at = int(time.time()))
         new_user.save()
         return redirect(url_for('welcome'))
     else:
+        print(form)
+        print(form.__dict__)
         return render_template("signup.html", form=form)
 
 
@@ -125,10 +130,22 @@ def authorize():
     return "This is just a stub"
 
 
+class MongoUser(db.Document, UserMixin):
+    username = db.StringField()
+    password = db.StringField()
+    zipcode = db.StringField()
+    #first_name = db.StringField()
+    #last_name = db.StringField()
+    email = db.StringField()
+    created_at = db.IntField(required = True)
+    
+    def get_id(self):
+        return str(self.mongo_id)
+
 class RegistrationForm(Form):
     username = TextField('Username', [validators.Length(min=4, max=25)])
     email = TextField('Email Address', [validators.Length(min=6, max=35)])
-    zipcode = TextField('Email Address', [validators.Length(min=6, max=35)])
+    zipcode = TextField('Zipcode', [validators.Length(min=5, max=35)])
     password = PasswordField('New Password', [
         validators.Required(),
         validators.EqualTo('confirm', message='Passwords must match')
