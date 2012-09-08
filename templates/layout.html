@@ -19,7 +19,7 @@
                 <div class="well sidebar-nav">
                     <ul class="nav nav-list">
                         <li class="nav-header"><a href="{{ url_for('welcome') }}">home</a></li>
-                        <li><a href="{{ url_for('welcome') }}">about</a></li>
+                        <li><a href="{{ url_for('about') }}">about</a></li>
                         <li><a href="/events/N00009638">pres. obama</a></li>
                         <li><a href="/events/N00000286">gov. romney</a></li>
                         <li><a href="{{ url_for('legislators_search') }}">your legislators</a></li>
@@ -30,7 +30,7 @@
                             <li><a href="{{ url_for('login') }}">login</a></li>
                             <li><a href="{{ url_for('signup') }}">sign up</a></li>
                         {% endif %}
-                        <li><a href="{{ url_for('welcome') }}">contact us</a></li>
+                        <li><a href="{{ url_for('contact') }}">contact us</a></li>
                     </ul>
                 </div>
             </div>

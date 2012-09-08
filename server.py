@@ -55,7 +55,16 @@ sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
     
 @app.route('/')
 def welcome():
-    return "Hello, world"
+    return render_template("home.html")
+    # return "Hello, world"
+
+@app.route('/about/')
+def about():
+    return render_template("about.html")
+
+@app.route('/contact/')
+def contact():
+    return render_template("contact.html")
 
 #This is called *after* the user's password is verified
 #TODO remove the redundant second query and combine it with the first
