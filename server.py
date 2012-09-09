@@ -42,6 +42,7 @@ from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
 db = MongoAlchemy(app)
 
 MEMCACHED_TIMEOUT = 10 * 60
+MEMCACHED_TIMEOUT_SUNLIGHT = 24 * 60 * 60
 
 #TODO remove this!
 app.debug = True
@@ -203,7 +204,7 @@ def events_by_cid(cid):
     if events is None or breakcache is not None:
         try:
             events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
-            cache.set(cache_key, events, MEMCACHED_TIMEOUT)
+            cache.set(cache_key, events, MEMCACHED_TIMEOUT_SUNLIGHT)
         except urllib2.URLError:
             events = []
 
@@ -225,7 +226,8 @@ def person_by_cid(cid):
                     'firstname' : 'Barack',
                     'middlename' : 'Hussein',
                     'lastname' : 'Obama',
-                    'party' : 'D'
+                    'party' : 'D',
+                    'twitter_id' : 'BarackObama'
                 }
             elif cid == 'N00000286':
                 person = {
@@ -233,12 +235,13 @@ def person_by_cid(cid):
                     'firstname' : 'Willard',
                     'middlename' : 'Mitt',
                     'lastname' : 'Romney',
-                    'party' : 'R'
+                    'party' : 'R',
+                    'twitter_id' : 'MittRomney'
                 }            
             else:
                 person = None
 
-        cache.set(cache_key, person, MEMCACHED_TIMEOUT)
+        cache.set(cache_key, person, MEMCACHED_TIMEOUT_SUNLIGHT)
 
     return person
 
@@ -313,7 +316,7 @@ def load_legislators(zipcode):
                 "twitter_id": "baratunde", 
             })
         legislators = {'Senators' : senators, 'Representatives' : representatives}
-        cache.set(cache_key, legislators, MEMCACHED_TIMEOUT)
+        cache.set(cache_key, legislators, MEMCACHED_TIMEOUT_SUNLIGHT)
     # else:
         # print("LEGS FROM CACHE")
     return legislators
