@@ -10,6 +10,8 @@ function fillEventsTable(events){
 	for(var i=0; i < events.length; i++){
 		var e = events[i];
 		var event_row = document.createElement('tr');
+		event_row.setAttribute('id', 'event_' + e['id']);
+		var href = "<a name='"+e['id']+"'></a>";
 		appendCellToRow(event_row, e['start_date'], 'date');
 		appendCellToRow(event_row, e['entertainment'], 'event');
 		appendCellToRow(event_row, e['venue'], 'location');
@@ -20,6 +22,10 @@ function fillEventsTable(events){
 		var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
 		appendCellToRow(event_row, event_html, 'event_listing');
 		event_table_body.appendChild(event_row);
+	}
+	var hash = document.location.hash.substring(1);
+	if(hash){
+		document.getElementById('event_' + hash).scrollIntoView(true);
 	}
 }
 function appendCellToRow(row, cell_html, className){
