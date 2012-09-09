@@ -255,7 +255,7 @@ def parse_tweet(tweet, event, person):
             contribution_amount = contribution_matches.group()
             tweet.replace("[Contributions Info]", contribution_amount)
 
-    tweet = tweet.replace("[venue]", "venue")
+    tweet = tweet.replace("[venue name]", "venue")
     tweet = tweet.replace("[start time]", "start_time")
     if event.has_key("end_time"):
         tweet = tweet.replace("[end time]", "end_time")
@@ -282,7 +282,7 @@ def suggested_tweets(legislator, event):
         elif keyword == 'romney' and legislator['lastname'] == 'Romney':
             for tweet in row[1:]:
                 suggested_tweets.append(parse_tweet(tweet, event, legislator))
-        elif keyword == 'generic':
+        elif keyword == 'general':
             for tweet in row[1:]:
                 suggested_tweets.append(parse_tweet(tweet, event, legislator))
 
