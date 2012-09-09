@@ -6,11 +6,14 @@
 
 <div id="lawmaker">
 
-        <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 25px;"/>
+        <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 15px;"/>
 
-<h3>Events for </h3>
+<h3 style="margin-bottom:5px;">Events for </h3>
+
+<div style="padding-bottom:10px;">
 <span class="politician">{{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})</span> 
-<br/>
+</div>
+<p style="font-family: Georgia; font-size:16px; font-style:italic; line-height:22px; margin-left:90px;">Looks like the {{ person['title'] }} has been rubbing elbows with the elite. Why weren't you — their most loyal constituent — invited? Tweet to tell them how you feel. </p>
 <br/>
 
 {% if event_count < 1 %}
