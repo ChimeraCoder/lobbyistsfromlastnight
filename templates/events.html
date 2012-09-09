@@ -17,61 +17,29 @@
 {% endif %}
 
 <table>
+  <thead>
   <tr>
-    <th>Date</th>
-    <th>Event</th>
-    <th>Location</th>
-    <th>Hosts</th>
-    <th>Contributions</th>
+    <th><a href="#" onclick="events_sort_by('start_date', false, true, false); return false;">Date</a></th>
+    <th><a href="#" onclick="events_sort_by('entertainment', true, false, false); return false;">Event</th>
+    <th><a href="#" onclick="events_sort_by('venue', true, false, false); return false;">Location</th>
+    <th><a href="#" onclick="events_sort_by('hosts', true, false, false); return false;">Hosts</th>
+    <th><a href="#" onclick="events_sort_by('contributions_info', false, false, true); return false;">Contributions</th>
   </tr>
-{% for event in events %}
- <tr>
-    <td>
-      {% if event['start_date'] %}
-        {{ event["start_date"] }}
-      {% endif %}
-    </td>
-    <td>
-      {% if event['entertainment'] %}
-        {{ event['entertainment'] }}
-      {% endif %}
-    </td>
-    <td>
-      {% if event['venue'] %}
-        {{ event["venue"] }}
-      {% endif %}
-    </td>
-    <td>
-      {% if event['hosts'] %}
-        {{ ", ".join(event['hosts']) }}
-      {% else %}
-        No information.
-      {% endif %}
-    </td>
+  </thead>
+  <tbody id="event_table_body"></tbody>
 
-    <!--
-      {% if event['entertainment'] %}
-        <li> Start time: {{ event['start_time'] }} </li>
-      {% endif %}
-      {% if event['end_time'] %}
-        <li> End time: {{ event['end_time'] }} </li>
-      {% endif %}
-    -->
-    <td>
-      {% if event['entertainment'] %}
-        {{ event['contributions_info'] }}
-      {% endif %}
-    </td>
-    </tr>
-  
-{% endfor %}
 </table>
 
 <h6><a href="/legislators/">other legislators</a></h6>
 
 
-{% endblock %}
+
+<script type="text/javascript">
+loadEventListings({{events| safe }});
+</script>
 
 
 {% endblock %}
 
+
+{% endblock %}

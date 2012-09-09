@@ -196,6 +196,7 @@ class LoginForm(Form):
 def events_for_legislator(cid):
     person = person_by_cid(cid)
     events = events_by_cid(cid)
+    events = json.dumps(events, default=lambda o: o.__dict__)
     event_count = len(events)
 
     return render_template('events.html', events=events, person=person, event_count=event_count)
