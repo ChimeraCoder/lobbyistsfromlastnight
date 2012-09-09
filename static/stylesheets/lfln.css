@@ -228,6 +228,18 @@ p.about {
 	color:#525252;
 }
 
+.intro_text {
+	width:450px;
+	float:left;
+}
+
+.sign_up {
+	width:450px;
+	float:right;
+
+}
+
+
 
 
 
