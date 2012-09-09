@@ -4,27 +4,40 @@
 {% block body %}
 {% block intro %} 
 
-<div style="float: right;">
-<form name="legislators_form">
-    <input type="text" placeholder="Zipcode" style="width:100px; text-align: right;" name="zipcode"/>
-    <button class="btn btn-info" type="submit">Search another district</button>
-</form>
+<div style="width:500px; float:left;">
+<h3 style="font-family:Georgia; font-weight:normal; font-size: 36px;">Legislators representing {{ zipcode }}</h3>
+<br/>
+<br/>
 </div>
 
-<h3>Legislators representing {{ zipcode }}</h3>
-<br/>
+<div style="float: right; margin-top:-30px;">
+<div id="zip_form">
+<form name="legislators_form">
+<fieldset>
+
+    <input type="text" placeholder="Zipcode" style="width:100px; text-align: right;" name="zipcode"/>
+    <input type="submit" value="Search another district"/>
+    
+</fieldset>
+</form>
+</div>
+</div>
+
 
 {% for (chamber, people) in legislators.iteritems() %}
-<div style="float: left; margin-right: 125px; ">
-<h3>{{chamber}}</h3>
-<ul>
+<div style="float: left; margin-right: 125px; margin-top:20px; ">
+<div style="margin-bottom:10px;">
+<h3 style="font-family:Georgia; font-weight:normal; font-size: 24px;">{{chamber}}</h3>
+</div>
+
+<ul style="list-style:none;">
   {% if people %}
   {% else %}
-    <em>That's odd, noone represents {{zipcode}}&hellip;</em>
+    <em>That's odd, no one represents {{zipcode}}&hellip;</em>
   {% endif %}
   {% for person in people %}
   <li>
-    <h4>
+    <h4 style="font-family: Georgia; font-weight: normal; font-size:18px; margin-bottom:8px;">
       {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }},
     {% if person['chamber'] == 'house' %}
      {{person['state']}}-{{person['district']}})
@@ -32,8 +45,8 @@
      {{person['district']}})
     {% endif %}
   </h4>
-    <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 25px;"/>
-    <ul>
+    <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
+    <ul style="list-style:none;" >
       <li><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
       {% if person['twitter_id'] %}
         <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>

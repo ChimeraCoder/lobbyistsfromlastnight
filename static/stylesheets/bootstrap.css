@@ -165,12 +165,12 @@ body {
 }
 
 a {
-  color: #0088cc;
+  color: #6B9130;
   text-decoration: none;
 }
 
 a:hover {
-  color: #005580;
+  color: #172208;
   text-decoration: underline;
 }
 
@@ -521,7 +521,7 @@ h6 {
 ul,
 ol {
   padding: 0;
-  margin: 0 0 9px 25px;
+  margin: 0 0 9px 0;
 }
 
 ul ul,

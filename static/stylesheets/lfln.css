@@ -190,7 +190,7 @@ th.suggested_tweets, td.suggested_tweets{
 	margin-bottom: 30px;
 }
 
-#zip_form fieldset input[type="text"] {
+#zip_form fieldset input[type="text"], #zip_form fieldset input[type="password"]  {
 	width: 50%;
 	padding: 10px 14px;
 	font-size: 18px;
@@ -231,6 +231,15 @@ p.about {
 	color:#525252;
 }
 
+p.about2 {
+	font-family: Georgia;
+	font-size: 15px;
+	line-height: 18px;
+	color:#525252;
+}
+
+
+
 .intro_text {
 	width:450px;
 	float:left;
@@ -257,6 +266,7 @@ tr.event_row_highlighted{
 	height: 100%;
 	
 }
+
 #tweet_overlay_wrapper #tweet_overlay{
 	width: 700px;
 	height: 500px;
@@ -268,13 +278,36 @@ tr.event_row_highlighted{
 	border-radius: 10px;
 	overflow: scroll;
 }
+
+<<<<<<< HEAD
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list{
 	margin-top: 15px;
 }
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list .tweet_overlay_elt{
 	margin-bottom: 8px;
 }
+
+#tweet_overlay_wrapper #tweet_overlay .tweet_overlay_elt{
+	border-bottom: 1px solid #d2d2d2;
+	padding-bottom: 10px;
+	padding-top:10px;
+}
+
+#tweet_overlay_wrapper #tweet_overlay #tweet_overlay_close{
+	float: right;
+}
+
+
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_close{
 	float: right;
 	margin-top: 8px;
 }
+
+#zipcode {
+	font-family: Georgia;
+	font-weight: normal;
+	font-size: 36px;
+}
+
+
+
