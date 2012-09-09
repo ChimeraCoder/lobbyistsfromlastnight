@@ -48,7 +48,7 @@ div.navigation_right {
 
 #header {
 	text-align: center;
-	background-image: url("http://larrybuch.com/lfln/logo.png");
+	background-image: url("/static/images/logo.png");
 	background-repeat: no-repeat;
 	margin-top: 20px;
 	height:172px;
