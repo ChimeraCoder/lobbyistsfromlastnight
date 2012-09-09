@@ -103,7 +103,7 @@ function displayTweetOverlay(eventId){
 	if(location.port){
 		event_url += ':' + location.port;
 	}
-	event_url += location.pathname + '#';
+	event_url += location.pathname;
 	//http://politicalpartytime.org/party/
 
 	var listElt = document.getElementById("tweet_overlay_list");
