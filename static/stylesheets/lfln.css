@@ -264,9 +264,13 @@ p.about {
 	border-radius: 10px;
 	overflow: scroll;
 }
-#tweet_overlay_wrapper #tweet_overlay .tweet_overlay_elt{
+#tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list{
+	margin-top: 15px;
+}
+#tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list .tweet_overlay_elt{
 	margin-bottom: 8px;
 }
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_close{
 	float: right;
+	margin-top: 8px;
 }

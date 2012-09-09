@@ -97,6 +97,10 @@ function displayTweetOverlay(eventId){
 		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' http://politicalpartytime.org/party/' + thisEvent['id'] + '/') + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
 		listElt.appendChild(tweetElt);
 	}
+	var tweetElt = document.createElement('div');
+	tweetElt.className = 'tweet_overlay_elt';
+	tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(' #lfln http://politicalpartytime.org/party/' + thisEvent['id'] + '/') + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">Write your own!</a>';
+	listElt.appendChild(tweetElt);
 
 	document.getElementById('tweet_overlay_close').onclick = function(){
 		wrapper.style.display = 'none';
