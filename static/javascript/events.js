@@ -94,7 +94,7 @@ function displayTweetOverlay(eventId){
 		var tweet = thisEvent['suggested_tweets'][i];
 		var tweetElt = document.createElement('div');
 		tweetElt.className = 'tweet_overlay_elt';
-		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' http://politicalpartytime.org/party/' + thisEvent['id'] + '/') + '">' + tweet + '</a>';
+		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' http://politicalpartytime.org/party/' + thisEvent['id'] + '/') + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
 		listElt.appendChild(tweetElt);
 	}
 
