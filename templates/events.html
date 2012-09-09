@@ -12,30 +12,30 @@
   <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. </h4>
 {% endif %}
 {% for event in events %}
-  <li>
-    {% if event['fields']['hosts'] %}
-      <h4> Hosts: {{ ", ".join(event['fields']['hosts']) }} </h4>
+ <li>
+    {% if event['hosts'] %}
+      <h4> Hosts: {{ ", ".join(event['hosts']) }} </h4>
     {% else %}
       <h4> This event has no host information. </h4>
     {% endif %}
     <ul>
-      {% if event['fields']['venue'] %}
-        <li> Location: {{ event['fields']["venue"] }}, </li>
+      {% if event['venue'] %}
+        <li> Location: {{ event["venue"] }}, </li>
       {% endif %}
-      {% if event['fields']['entertainment'] %}
-        <li> Entertainment: {{ event['fields']['entertainment'] }}, </li>
+      {% if event['entertainment'] %}
+        <li> Entertainment: {{ event['entertainment'] }}, </li>
       {% endif %}
-      {% if event['fields']['entertainment'] %}
-        <li> Date: {{ event['fields']["start_date"] }}, </li>
+      {% if event['entertainment'] %}
+        <li> Date: {{ event["start_date"] }}, </li>
       {% endif %}
-      {% if event['fields']['entertainment'] %}
-        <li> Start time: {{ event['fields']['start_time'] }}, </li>
+      {% if event['entertainment'] %}
+        <li> Start time: {{ event['start_time'] }}, </li>
       {% endif %}
-      {% if event['fields']['end_time'] %}
-        <li> End time: {{ event['fields']['end_time'] }} </li>
+      {% if event['end_time'] %}
+        <li> End time: {{ event['end_time'] }} </li>
       {% endif %}
-      {% if event['fields']['entertainment'] %}
-        <li> Contributions: {{ event['fields']['contributions_info'] }} </li>
+      {% if event['entertainment'] %}
+        <li> Contributions: {{ event['contributions_info'] }} </li>
       {% endif %}
     </ul>
   </li>

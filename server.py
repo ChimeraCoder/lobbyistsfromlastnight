@@ -207,6 +207,14 @@ def events_by_cid(cid):
         except urllib2.URLError:
             events = []
 
+    events = map(lambda e: e['fields'], events)
+    for e in events:
+	e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
+    events.sort(key=lambda e: e['start_date'].tm_year)
+    for e in events:
+	e['start_date'] = time.strftime("%b %d, %Y", e['start_date'])
+    events.reverse()
+
     return events   
 
 def person_by_cid(cid):
