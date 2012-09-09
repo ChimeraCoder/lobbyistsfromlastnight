@@ -1,8 +1,10 @@
 raw_events = null;
+event_table_cid = null;
 
 function loadEventListings(cid, events){
 	raw_events = events;
 	fillEventsTable(cid, raw_events, true);
+	event_table_cid=cid;
 }
 
 function fillEventsTable(cid, events, push_event_to_top){
@@ -96,7 +98,7 @@ function events_sort_by(sort_key, ascending, is_date, is_numeric){
 			return 0;
 		}
 	}) 
-	fillEventsTable(events, false);
+	fillEventsTable(event_table_cid, events, false);
 }
 
 function getBitlyUrl(eventUrl) {
