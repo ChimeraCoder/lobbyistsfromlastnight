@@ -59,7 +59,7 @@ div.navigation_right {
 #subtitle {
 	font-style: italic;
 	font-size: 20px;
-	margin-bottom: 60px;
+	margin-bottom: 20px;
 }
 
 #footer {
@@ -94,4 +94,9 @@ div.navigation_right {
 	font-weight: bold;
 
 }
+
+#content {
+	margin-top: 20px;
+}
+
 
