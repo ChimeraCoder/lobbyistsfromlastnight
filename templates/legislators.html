@@ -45,7 +45,11 @@
      {{person['district']}})
     {% endif %}
   </h4>
+    {% if person['twitter_id'] %}
     <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
+    {% else %}
+    <img src="/static/images/taco.png" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
+    {% endif %}
     <ul style="list-style:none;" >
       <li><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
       {% if person['twitter_id'] %}

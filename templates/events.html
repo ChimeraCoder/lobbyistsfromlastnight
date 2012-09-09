@@ -6,7 +6,11 @@
 
 <div id="lawmaker">
 
+  {% if person['twitter_id'] %}
         <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 15px;"/>
+  {% else %}
+      <img src="/static/images/taco.png" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
+  {% endif %}
 
 <h3 style="margin-bottom:5px;">Events for </h3>
 
