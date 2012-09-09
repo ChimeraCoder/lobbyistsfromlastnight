@@ -78,7 +78,8 @@ def load_user(userid):
     rv = cache.get(userid)
     if rv is None:
         rv = MongoUser.query.filter(MongoUser.mongo_id == userid).first()
-        cache.set(userid, rv, MEMCACHED_TIMEOUT)
+        if rv is not None:
+            cache.set(userid, rv, MEMCACHED_TIMEOUT)
     return rv
 
 def load_user_by_username(username):
@@ -205,8 +206,18 @@ def events_by_cid(cid):
         try:
             events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
             cache.set(cache_key, events, MEMCACHED_TIMEOUT_SUNLIGHT)
+            if events is not None:
+                cache.set(cache_key, events, MEMCACHED_TIMEOUT)
         except urllib2.URLError:
             events = []
+
+    events = map(lambda e: e['fields'], events)
+    for e in events:
+	e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
+    events.sort(key=lambda e: e['start_date'].tm_year)
+    for e in events:
+	e['start_date'] = time.strftime("%b %d, %Y", e['start_date'])
+    events.reverse()
 
     return events   
 
@@ -241,7 +252,8 @@ def person_by_cid(cid):
             else:
                 person = None
 
-        cache.set(cache_key, person, MEMCACHED_TIMEOUT_SUNLIGHT)
+        if person is not None:
+            cache.set(cache_key, person, MEMCACHED_TIMEOUT)
 
     return person
 
@@ -316,7 +328,8 @@ def load_legislators(zipcode):
                 "twitter_id": "baratunde", 
             })
         legislators = {'Senators' : senators, 'Representatives' : representatives}
-        cache.set(cache_key, legislators, MEMCACHED_TIMEOUT_SUNLIGHT)
+        if legislators is not None:
+            cache.set(cache_key, legislators, MEMCACHED_TIMEOUT)
     # else:
         # print("LEGS FROM CACHE")
     return legislators
