@@ -202,7 +202,8 @@ def events_for_legislator(cid, eid=None):
         event['suggested_tweets'] = suggested_tweets(person, event)
     events = json.dumps(events, default=lambda o: o.__dict__)
 
-    return render_template('events.html', events=events, person=person, event_count=event_count, event_id=eid)
+    title = person['firstname'] + ' ' + person['lastname'] + ' | Events'
+    return render_template('events.html', events=events, person=person, event_count=event_count, event_id=eid, title=title)
 
 def events_by_cid(cid):
      #check the memcached cache first
