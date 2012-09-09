@@ -226,28 +226,28 @@ th.suggested_tweets, td.suggested_tweets{
 
 p.about {
 	font-family: Georgia;
-	font-size: 24px;
-	line-height: 32px;
+	font-size: 34px;
+	line-height: 40px;
 	color:#525252;
 }
 
 p.about2 {
 	font-family: Georgia;
-	font-size: 15px;
-	line-height: 18px;
+	font-size: 18px;
+	line-height: 20px;
 	color:#525252;
 }
 
 
 
 .intro_text {
-	width:450px;
+	width:950px;
 	float:left;
 }
 
 .sign_up {
-	width:450px;
-	float:right;
+	width:950px;
+	float:left;
 
 }
 
@@ -309,7 +309,13 @@ tr.event_row_highlighted{
 }
 
 th.suggested_tweets, td.suggested_tweets {
-	background-color: red;
+	background-color: #8CC63E;
+	padding-left: 10px;
 	
 }
+
+th.suggested_tweets, td.suggested_tweets a {
+color:white;	
+}
+
 

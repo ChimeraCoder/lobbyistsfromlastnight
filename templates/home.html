@@ -5,15 +5,35 @@
 {% block intro %} 
 
 <div class="intro_text">
-	<p class="about" style="">We’re tired of missing out on the pheasant hunts, BBQs and yacht parties that accompany a fat campaign contribution. <strong>We want pics, we want stories and we want answers.</strong></p> 
+	<p class="about" style="">We’re tired of missing out on the pheasant hunts, BBQs and yacht parties that accompany a fat campaign contribution. <em>We want pics, we want stories and we want answers.</em></p> 
 
 	<p class="about2" style="line-height:24px;">Lobbyists From Last Night is a project made during the <a href="http://comedyhackday.org/">Comedy Hack Day in NYC</a>. Made using the <a href="http://politicalpartytime.org/api/">Sunlight Congress API</a> and <a href="http://politicalpartytime.org/">Political Party Time</a>.</p>
 </div>
 
 
 <div class="sign_up">
-	<p class="about">Sign-up form here?</p>	
+
+<div id="zip_form">
+	<!-- <h3>What's your ZIP?</h3> -->
+		<fieldset>
+			<form name="legislators_form" action="/legislators/search">
+				<input type="text" name="zipcode" placeholder="What's your ZIP?"/>
+				<input type="submit" value="LET'S PARTY"/>
+			</form>
+		</fieldset>
+
+<script type="text/javascript">
+ document.legislators_form.zipcode.focus();
+</script>
+
 </div>
+
+
+</div>
+
+
+
+
 
 {% endblock %}
 
