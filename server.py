@@ -239,7 +239,7 @@ def events_by_cid(cid):
     return events   
 
 def parse_tweet(tweet, event, person):
-    tweet.replace("@lawmaker",  "@"+person['twitter_id'])
+    tweet = tweet.replace("@lawmaker",  "@"+person['twitter_id'])
 
     contribution_regex = re.compile("\$[\d,]+")
     if event['contributions_info']:
