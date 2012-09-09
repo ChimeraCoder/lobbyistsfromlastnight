@@ -4,33 +4,44 @@ function loadEventListings(events){
 	raw_events = events;
 	fillEventsTable(raw_events, true);
 }
-function fillEventsTable(events, scrollToHighlightedEvent){
+function fillEventsTable(events, push_event_to_top){
 	var event_table_body = document.getElementById('event_table_body');
 	event_table_body.innerHTML = "";
+	if(push_event_to_top){
+		for(var i=0; i < events.length; i++){
+			var e = events[i];
+			if(event_id == e['id']){
+				appendEventToTable(event_table_body, e);
+			}
+		}
+	}
 	for(var i=0; i < events.length; i++){
 		var e = events[i];
-		var event_row = document.createElement('tr');
-		event_row.setAttribute('id', 'event_' + e['id']);
 		if(event_id == e['id']){
-			event_row.className = 'event_row_highlighted';
+			if(push_event_to_top){
+				continue;
+			}
 		}
-		var href = "<a name='"+e['id']+"'></a>";
-		appendCellToRow(event_row, e['start_date'], 'date');
-		appendCellToRow(event_row, e['entertainment'], 'event');
-		appendCellToRow(event_row, e['venue'], 'location');
-		appendCellToRow(event_row, e['hosts'], 'hosts');
-		appendCellToRow(event_row, e['contributions_info'], 'contributions');
-		var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
-		appendCellToRow(event_row, tweet_html, 'suggested_tweets');
-		var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
-		appendCellToRow(event_row, event_html, 'event_listing');
-		event_table_body.appendChild(event_row);
+		appendEventToTable(event_table_body, e);
 	}
-	if(event_id && scrollToHighlightedEvent){
-		setTimeout(function(){
-			document.getElementById('event_' + event_id).scrollIntoView(true);
-		}, 400);
+}
+function appendEventToTable(table, e){
+	var event_row = document.createElement('tr');
+	event_row.setAttribute('id', 'event_' + e['id']);
+	if(event_id == e['id']){
+		event_row.className = 'event_row_highlighted';
 	}
+	var href = "<a name='"+e['id']+"'></a>";
+	appendCellToRow(event_row, e['start_date'], 'date');
+	appendCellToRow(event_row, e['entertainment'], 'event');
+	appendCellToRow(event_row, e['venue'], 'location');
+	appendCellToRow(event_row, e['hosts'], 'hosts');
+	appendCellToRow(event_row, e['contributions_info'], 'contributions');
+	var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
+	appendCellToRow(event_row, tweet_html, 'suggested_tweets');
+	var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
+	appendCellToRow(event_row, event_html, 'event_listing');
+	table.appendChild(event_row);
 }
 function appendCellToRow(row, cell_html, className){
 	var cell = document.createElement('td');
