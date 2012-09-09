@@ -314,7 +314,8 @@ def person_by_cid(cid):
                     'middlename' : 'Hussein',
                     'lastname' : 'Obama',
                     'party' : 'D',
-                    'twitter_id' : 'BarackObama'
+                    'twitter_id' : 'BarackObama',
+                    'phone' : '202-456-1111'
                 }
             elif cid == ROMNEY_CID:
                 person = {
@@ -323,7 +324,8 @@ def person_by_cid(cid):
                     'middlename' : 'Mitt',
                     'lastname' : 'Romney',
                     'party' : 'R',
-                    'twitter_id' : 'MittRomney'
+                    'twitter_id' : 'MittRomney',
+                    'phone' : '857-288-3500'
                 }            
             else:
                 person = None
