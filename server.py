@@ -343,4 +343,4 @@ def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
