@@ -146,6 +146,9 @@ width:200px;
 th.contributions, td.contributions {
 width:200px;
 }
+th.event_listing, td.event_listing{
+	width: 140px;
+}
 
 #lawmaker {
 	margin-bottom: 20px;

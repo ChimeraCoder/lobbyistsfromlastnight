@@ -218,7 +218,10 @@ def events_by_cid(cid):
                 cache.set(cache_key, events, MEMCACHED_TIMEOUT)
         except urllib2.URLError:
             events = []
+    # print(events)
 
+    for e in events:
+        e['fields']['id'] = e['pk']
     events = map(lambda e: e['fields'], events)
     for e in events:
 	e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
