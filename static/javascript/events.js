@@ -37,10 +37,10 @@ function appendEventToTable(table, e){
 	appendCellToRow(event_row, e['venue'], 'location');
 	appendCellToRow(event_row, e['hosts'], 'hosts');
 	appendCellToRow(event_row, e['contributions_info'], 'contributions');
-	var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
-	appendCellToRow(event_row, tweet_html, 'suggested_tweets');
 	var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
 	appendCellToRow(event_row, event_html, 'event_listing');
+	var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
+	appendCellToRow(event_row, tweet_html, 'suggested_tweets');
 	table.appendChild(event_row);
 }
 function appendCellToRow(row, cell_html, className){
