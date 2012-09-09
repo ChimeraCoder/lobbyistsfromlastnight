@@ -255,7 +255,7 @@ def parse_tweet(tweet, event, person):
 
 def suggested_tweets(legislator, event):
     suggested_tweets = []
-    tweets_csv = csv.reader(open('tweets.csv', 'rb'))
+    tweets_csv = csv.reader(open('tweets.csv', 'rb'), '","')
     for row in tweets_csv:
         keyword = row[0].lower()
         if keyword in event['entertainment'].lower():
