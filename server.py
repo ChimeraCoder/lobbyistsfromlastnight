@@ -57,6 +57,23 @@ OBAMA_CID = 'N00009638'
 
 sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
 
+
+from twilio.rest import TwilioRestClient
+client = TwilioRestClient()
+
+
+@app.route('/call/twilio/', methods=['POST'])
+def call_twilio():
+    to_number = request.args.get('to_number')
+    app.logger.warning("Calling number " + str(to_number))
+    call = client.calls.create(to=to_number, 
+            from_= app.config['TWILIO_OUTGOING'], 
+            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+    app.logger.warning("Finished calling number " + str(to_number))
+    print("calling")
+
+
+
 import logging
 from logging import Formatter, FileHandler
 file_handler = FileHandler('runlogs.log', mode='a')
