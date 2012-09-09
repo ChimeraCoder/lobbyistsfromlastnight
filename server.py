@@ -149,8 +149,6 @@ class MongoUser(db.Document, UserMixin):
     username = db.StringField()
     password = db.StringField()
     zipcode = db.StringField()
-    #first_name = db.StringField()
-    #last_name = db.StringField()
     email = db.StringField()
     created_at = db.IntField(required = True)
     
@@ -217,7 +215,6 @@ def events_by_cid(cid):
                 cache.set(cache_key, events, MEMCACHED_TIMEOUT_SUNLIGHT)
         except urllib2.URLError:
             events = []
-    # print(events)
 
     for e in events:
         e['fields']['id'] = e['pk']
@@ -328,7 +325,6 @@ def legislators_search():
 
     if zipcode:
         legislators = load_legislators(zipcode)
-        # print(json.dumps(legislators, indent=4))
         title = "Legislators for " + zipcode
         return render_template('legislators.html', zipcode=zipcode, legislators=legislators, title=title)
     else:
@@ -346,7 +342,6 @@ def load_legislators(zipcode):
     legislators = cache.get(cache_key)
     breakcache = request.args.get("breakcache", None) 
     if legislators is None or breakcache is not None:
-        # print("pulling from sunlight")
         legislators = sunlight.congress.legislators_for_zip(zipcode=zipcode)
         senators = []
         representatives = []
