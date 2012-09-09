@@ -126,7 +126,7 @@ function displayTweetOverlay(cid, eventId){
 			break;
 		}
 	}
-        var eventUrl = "http://zencephalon.com:5000/" + cid + "/" + eventId;
+        var eventUrl = "http://www.lobbyistsfromlastnight.com:5000/events/" + cid + "/" + eventId;
 	// var eventUrl = 'http://' + location.hostname;
 	// if(location.port){
 	//	eventUrl += ':' + location.port;
