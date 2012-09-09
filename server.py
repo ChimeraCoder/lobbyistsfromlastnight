@@ -64,13 +64,13 @@ client = TwilioRestClient()
 
 @app.route('/call/twilio/', methods=['POST'])
 def call_twilio():
-    to_number = request.args.get('to_number')
-    app.logger.warning("Calling number " + str(to_number))
-    call = client.calls.create(to=to_number, 
-            from_= app.config['TWILIO_OUTGOING'], 
-            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
-    app.logger.warning("Finished calling number " + str(to_number))
-    print("calling")
+    if request.method == 'POST':
+        to_number = request.args.get('to_number')
+        app.logger.warning("Calling number " + str(to_number))
+        call = client.calls.create(to=to_number, 
+                from_= app.config['TWILIO_OUTGOING'], 
+                url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+        app.logger.warning("Finished calling number " + str(to_number))
 
 
 
