@@ -240,7 +240,7 @@ def parse_tweet(tweet, event, person):
         contribution_matches = contribution_regex.match(event['contributions_info'])
         if contribution_matches:
             contribution_amount = contribution_matches.group()
-            tweet.replace("[contribution]", contribution_amount)
+            tweet.replace("[Contributions Info]", contribution_amount)
 
     tweet.replace("[venue]", "venue")
     tweet.replace("[start time]", "start_time")
@@ -255,7 +255,7 @@ def parse_tweet(tweet, event, person):
 
 def suggested_tweets(legislator, event):
     suggested_tweets = []
-    tweets_csv = csv.reader(open('tweets.csv', 'rb'))
+    tweets_csv = csv.reader(open('tweets.tsv', 'rb'), delimiter='\t')
     for row in tweets_csv:
         keyword = row[0].lower()
         if event['entertainment'] == None:
