@@ -16,7 +16,7 @@ function fillEventsTable(events){
 		appendCellToRow(event_row, e['hosts'], 'hosts');
 		appendCellToRow(event_row, e['contributions_info'], 'contributions');
 		appendCellToRow(event_row, e['suggested_tweets'], 'suggested_tweets');
-		event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">Event</a>';
+		event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
 		appendCellToRow(event_row, event_html, 'event_listing');
 		event_table_body.appendChild(event_row);
 	}

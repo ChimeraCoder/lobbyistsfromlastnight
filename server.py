@@ -387,7 +387,7 @@ def load_legislators(zipcode):
                 "gender": "M", 
                 "twitter_id": "baratunde", 
             })
-        legislators = {'Senators' : senators, 'Representatives' : representatives}
+        legislators = {'Senate' : senators, 'House' : representatives}
         if legislators is not None:
             cache.set(cache_key, legislators, MEMCACHED_TIMEOUT)
     # else:

@@ -4,19 +4,18 @@
 {% block body %}
 {% block intro %} 
 
+<div style="float: right;">
 <form name="legislators_form">
-    <input type="text" name="zipcode"/>
+    <input type="text" placeholder="Zipcode" style="width:100px; text-align: right;" name="zipcode"/>
     <button class="btn btn-info" type="submit">Search another district</button>
 </form>
+</div>
 
-
-<h3>Legislators for {{ zipcode }}</h3>
+<h3>Legislators representing {{ zipcode }}</h3>
 <br/>
 
-
-
 {% for (chamber, people) in legislators.iteritems() %}
-<div style="float: left; margin-right: 50px; border-left: 1px solid rgb(223,223,223); padding-left: 50px;">
+<div style="float: left; margin-right: 125px; ">
 <h3>{{chamber}}</h3>
 <ul>
   {% if people %}
@@ -57,6 +56,8 @@
 {% endfor %}
 
 <div style="clear:both;">&nbsp;</div>
+
+
 
 <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q={{zipcode}}&amp;aq=&amp;ie=UTF8&amp;hq=&amp;hnear={{zipcode}}&amp;t=m&amp;z=12&amp;output=embed"></iframe><br/><br/>
 
