@@ -15,8 +15,9 @@ function fillEventsTable(events){
 		appendCellToRow(event_row, e['venue'], 'location');
 		appendCellToRow(event_row, e['hosts'], 'hosts');
 		appendCellToRow(event_row, e['contributions_info'], 'contributions');
-		appendCellToRow(event_row, e['suggested_tweets'], 'suggested_tweets');
-		event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
+		var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
+		appendCellToRow(event_row, tweet_html, 'suggested_tweets');
+		var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
 		appendCellToRow(event_row, event_html, 'event_listing');
 		event_table_body.appendChild(event_row);
 	}
@@ -72,3 +73,29 @@ function events_sort_by(sort_key, ascending, is_date, is_numeric){
 	}) 
 	fillEventsTable(events)
 }
+
+function displayTweetOverlay(eventId){
+	var wrapper = document.getElementById("tweet_overlay_wrapper");
+	wrapper.style.display = 'block';
+	wrapper.onclick = function(){
+		wrapper.style.display = 'none';
+	}
+	var thisEvent;
+	for(var i=0; i < raw_events.length; i++){
+		var e = raw_events[i];
+		if(e['id'] == eventId){
+			thisEvent = e;
+			break;
+		}
+	}
+	var elt = document.getElementById("tweet_overlay");
+	for(var i=0; i < thisEvent['suggested_tweets'].length; i++){
+		var tweet = thisEvent['suggested_tweets'][i];
+		var html = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '" class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
+
+		elt.innerHTML += html + "<br/>";
+	}
+}
+
+
+

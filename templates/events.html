@@ -30,7 +30,7 @@
     <th class="location"><a href="#" onclick="events_sort_by('venue', true, false, false); return false;">Location</th>
     <th class="hosts"><a href="#" onclick="events_sort_by('hosts', true, false, false); return false;">Hosts</th>
     <th class="contributions"><a href="#" onclick="events_sort_by('contributions_info', false, false, true); return false;">Contributions</th>
-    <th class="suggested_tweets">Suggested Tweets</th>
+    <th class="suggested_tweets">Tweet</th>
     <th class="party_time">Political Party Time Listing</th>
   </tr>
   </thead>
@@ -39,7 +39,11 @@
 
 <h6><a href="/legislators/">other legislators</a></h6>
 
+<div id="tweet_overlay_wrapper">
+<div id="tweet_overlay">
 
+</div>
+</div>
 
 <script type="text/javascript">
 loadEventListings({{events| safe }});

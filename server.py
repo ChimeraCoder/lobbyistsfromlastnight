@@ -213,9 +213,8 @@ def events_by_cid(cid):
     if events is None or breakcache is not None:
         try:
             events = json.loads(urllib2.urlopen("http://politicalpartytime.org/json/" + cid).read())
-            cache.set(cache_key, events, MEMCACHED_TIMEOUT_SUNLIGHT)
             if events is not None:
-                cache.set(cache_key, events, MEMCACHED_TIMEOUT)
+                cache.set(cache_key, events, MEMCACHED_TIMEOUT_SUNLIGHT)
         except urllib2.URLError:
             events = []
     # print(events)

@@ -164,6 +164,9 @@ width:200px;
 th.event_listing, td.event_listing{
 	width: 140px;
 }
+th.suggested_tweets, td.suggested_tweets{
+	width: 80px;
+}
 
 #lawmaker {
 	margin-bottom: 20px;
@@ -240,6 +243,24 @@ p.about {
 }
 
 
-
-
+#tweet_overlay_wrapper{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(53,53,53,0.9);
+	width: 100%;
+	height: 100%;
+	
+}
+#tweet_overlay{
+	width: 700px;
+	height: 500px;
+	margin: 100px auto;
+	padding: 20px 20px;
+	font-size: 25px;
+	line-height: 35px;
+	background-color: rgba(250,250,250,0.97);
+	border-radius: 10px;
+}
 
