@@ -103,7 +103,18 @@ table {
 	width:960px;
 }
 
-td, th {
+td {
+	padding-right:10px;
+	padding-bottom:20px;
+	padding-top:10px;
+	margin-right: 20px;
+
+	text-align: left;
+	vertical-align:top;
+	border-top: 1px solid #dbdbdb;
+}
+
+th {
 	padding-right:10px;
 	padding-bottom:10px;
 	padding-top:10px;
@@ -111,9 +122,7 @@ td, th {
 
 	text-align: left;
 	vertical-align:top;
-	border-top: 1px solid #dbdbdb;
-
-	
+	border-top: 1px solid #dbdbdb;	
 }
 
 th.date, td.date {
@@ -125,12 +134,14 @@ width:200px;
 }
 
 th.location, td.location {
-width:300px;
+width:200px;
 }
 
+/*
 th.hosts, td.hosts {
 width:200px;
 }
+*/
 
 th.contributions, td.contributions {
 width:200px;
@@ -151,4 +162,47 @@ width:200px;
 	font-size: 13px;
 	letter-spacing: 2px;
 }
+
+#zip_form {
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+#zip_form fieldset input[type="text"] {
+	width: 50%;
+	padding: 10px 14px;
+	font-size: 18px;
+	border: 1px solid #ddd;
+	background: #f5f5f5;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	margin-right: 10px;
+}
+
+#zip_form fieldset input[type="submit"] {
+	padding: 10px 14px;
+	font-size: 18px;
+	color: #fff;
+	border: none;
+	background: #999;
+	border-radius: 4px;
+	}
+	
+#zip_form fieldset input[type="submit"]:hover,
+#zip_form fieldset input[type="submit"]:focus {
+	background: #777;
+	}
+	
+#zip_form fieldset input[type="submit"]:active {
+	background: #666;
+	}				
+
+
+
+
 

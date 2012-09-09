@@ -3,16 +3,20 @@
 
 {% block body %}
 {% block intro %} 
-
-<h3>What's your ZIP?</h3>
-<form name="legislators_form">
-    <input type="text" name="zipcode"/>
-    <input type="submit"/>
-</form>
+<div id="zip_form">
+	<!-- <h3>What's your ZIP?</h3> -->
+		<fieldset>
+			<form name="legislators_form">
+				<input type="text" name="zipcode" placeholder="What's your ZIP?"/>
+				<input type="submit" value="LET'S PARTY"/>
+			</form>
+		</fieldset>
 
 <script type="text/javascript">
  document.legislators_form.zipcode.focus();
 </script>
+
+</div>
 
 {% endblock %}
 

@@ -27,7 +27,6 @@
     <th class="date">Date</th>
     <th class="event">Event</th>
     <th class="location">Location</th>
-    <th class="hosts">Hosts</th>
     <th class="contributions">Contributions</th>
   </tr>
 {% for event in events %}
@@ -47,6 +46,7 @@
         {{ event["venue"] }}
       {% endif %}
     </td>
+    <!--
     <td class="hosts">
       {% if event['hosts'] %}
         {{ ", ".join(event['hosts']) }}
@@ -55,7 +55,7 @@
       {% endif %}
     </td>
 
-    <!--
+   
       {% if event['entertainment'] %}
         <li> Start time: {{ event['start_time'] }} </li>
       {% endif %}
@@ -68,6 +68,7 @@
         {{ event['contributions_info'] }}
       {% endif %}
     </td>
+    
     </tr>
   
 {% endfor %}
