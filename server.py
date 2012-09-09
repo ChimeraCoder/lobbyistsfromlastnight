@@ -239,6 +239,9 @@ def events_by_cid(cid):
     return events   
 
 def parse_tweet(tweet, event, person):
+    if tweet is "":
+        return None
+
     tweet = tweet.replace("@lawmaker",  "@"+person['twitter_id'])
 
     contribution_regex = re.compile("\$[\d,]+")
@@ -248,11 +251,11 @@ def parse_tweet(tweet, event, person):
             contribution_amount = contribution_matches.group()
             tweet.replace("[Contributions Info]", contribution_amount)
 
-    tweet.replace("[venue]", "venue")
-    tweet.replace("[start time]", "start_time")
+    tweet = tweet.replace("[venue]", "venue")
+    tweet = tweet.replace("[start time]", "start_time")
     if event.has_key("end_time"):
-        tweet.replace("[end time]", "end_time")
-    tweet.replace("[event date]", "start_date")
+        tweet = tweet.replace("[end time]", "end_time")
+    tweet = tweet.replace("[event date]", "start_date")
     tweet = tweet + " #lfln"
 
     if "[" in tweet:
