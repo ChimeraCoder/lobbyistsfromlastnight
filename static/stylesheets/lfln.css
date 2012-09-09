@@ -253,14 +253,20 @@ p.about {
 	height: 100%;
 	
 }
-#tweet_overlay{
+#tweet_overlay_wrapper #tweet_overlay{
 	width: 700px;
 	height: 500px;
 	margin: 100px auto;
 	padding: 20px 20px;
-	font-size: 25px;
-	line-height: 35px;
+	font-size: 15px;
+	line-height: 20px;
 	background-color: rgba(250,250,250,0.97);
 	border-radius: 10px;
+	overflow: scroll;
 }
-
+#tweet_overlay_wrapper #tweet_overlay .tweet_overlay_elt{
+	margin-bottom: 8px;
+}
+#tweet_overlay_wrapper #tweet_overlay #tweet_overlay_close{
+	float: right;
+}

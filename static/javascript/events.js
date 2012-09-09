@@ -88,12 +88,18 @@ function displayTweetOverlay(eventId){
 			break;
 		}
 	}
-	var elt = document.getElementById("tweet_overlay");
+	var listElt = document.getElementById("tweet_overlay_list");
+	listElt.innerHTML = "";
 	for(var i=0; i < thisEvent['suggested_tweets'].length; i++){
 		var tweet = thisEvent['suggested_tweets'][i];
-		var html = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '" class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
+		var tweetElt = document.createElement('div');
+		tweetElt.className = 'tweet_overlay_elt';
+		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' http://politicalpartytime.org/party/' + thisEvent['id'] + '/') + '">' + tweet + '</a>';
+		listElt.appendChild(tweetElt);
+	}
 
-		elt.innerHTML += html + "<br/>";
+	document.getElementById('tweet_overlay_close').onclick = function(){
+		wrapper.style.display = 'none';
 	}
 }
 
