@@ -5,15 +5,13 @@ function loadEventListings(events){
 	fillEventsTable(raw_events);
 }
 function fillEventsTable(events){
-	var hash = document.location.hash.substring(1);
-
 	var event_table_body = document.getElementById('event_table_body');
 	event_table_body.innerHTML = "";
 	for(var i=0; i < events.length; i++){
 		var e = events[i];
 		var event_row = document.createElement('tr');
 		event_row.setAttribute('id', 'event_' + e['id']);
-		if(hash == e['id']){
+		if(event_id == e['id']){
 			event_row.className = 'event_row_highlighted';
 		}
 		var href = "<a name='"+e['id']+"'></a>";
@@ -28,9 +26,9 @@ function fillEventsTable(events){
 		appendCellToRow(event_row, event_html, 'event_listing');
 		event_table_body.appendChild(event_row);
 	}
-	if(hash){
+	if(event_id){
 		setTimeout(function(){
-			document.getElementById('event_' + hash).scrollIntoView(true);
+			document.getElementById('event_' + event_id).scrollIntoView(true);
 		}, 400);
 	}
 }

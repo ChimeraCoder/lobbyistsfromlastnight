@@ -192,8 +192,9 @@ class LoginForm(Form):
                 return False
 
 
-@app.route('/events/<cid>')
-def events_for_legislator(cid):
+@app.route('/events/<cid>/')
+@app.route('/events/<cid>/<eid>/')
+def events_for_legislator(cid, eid=None):
     person = person_by_cid(cid)
     events = events_by_cid(cid)
     event_count = len(events)
@@ -201,7 +202,7 @@ def events_for_legislator(cid):
         event['suggested_tweets'] = suggested_tweets(person, event)
     events = json.dumps(events, default=lambda o: o.__dict__)
 
-    return render_template('events.html', events=events, person=person, event_count=event_count)
+    return render_template('events.html', events=events, person=person, event_count=event_count, event_id=eid)
 
 def events_by_cid(cid):
      #check the memcached cache first
