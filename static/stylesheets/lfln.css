@@ -22,6 +22,19 @@ div.navigation {
 
 .nav_item {
 	margin-right: 20px;
+	font-size: 15px;
+	text-transform: capitalize;
+}
+
+.nav_item_last {
+	font-size: 15px;
+	text-transform: capitalize;
+	
+}
+
+
+.nav_item a, .nav_item_last a {
+	color:#6B9130;
 }
 
 div.navigation_left {
@@ -49,17 +62,19 @@ div.navigation_right {
 
 #maintitle {
 	text-transform: uppercase;
-	font-size: 34pt;
+	font-size: 28pt;
 	letter-spacing: 4px;
 	font-weight: normal;
 	margin-bottom: 20px;
 	margin-top: 20px;
+	color:#444444;
 }
 
 #subtitle {
 	font-style: italic;
-	font-size: 20px;
+	font-size: 17px;
 	margin-bottom: 20px;
+	color: #7F7F7F;
 }
 
 #footer {
@@ -189,10 +204,10 @@ th.event_listing, td.event_listing{
 
 #zip_form fieldset input[type="submit"] {
 	padding: 10px 14px;
-	font-size: 18px;
+	font-size: 16px;
 	color: #fff;
 	border: none;
-	background: #999;
+	background: #8CC63E;
 	border-radius: 4px;
 	}
 	
@@ -205,6 +220,13 @@ th.event_listing, td.event_listing{
 	background: #666;
 	}				
 
+
+p.about {
+	font-family: Georgia;
+	font-size: 24px;
+	line-height: 32px;
+	color:#525252;
+}
 
 
 
