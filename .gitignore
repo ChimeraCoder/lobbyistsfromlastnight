@@ -1,4 +1,6 @@
 *.swp
+*.swn
+*.swo
 *.log
 *.pyc
 credentials.txt

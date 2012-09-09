@@ -62,15 +62,16 @@ from twilio.rest import TwilioRestClient
 client = TwilioRestClient()
 
 
-@app.route('/call/twilio/', methods=['POST'])
+@app.route('/call/twilio/', )
 def call_twilio():
-    if request.method == 'POST':
-        to_number = request.args.get('to_number')
-        app.logger.warning("Calling number " + str(to_number))
-        call = client.calls.create(to=to_number, 
-                from_= app.config['TWILIO_OUTGOING'], 
-                url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
-        app.logger.warning("Finished calling number " + str(to_number))
+    to_number = request.args.get('to_number')
+    to_number = os.environ.get("TWILIO_OVERRIDE")
+    app.logger.warning("Calling number " + str(to_number))
+    call = client.calls.create(to=to_number, 
+            from_= app.config['TWILIO_OUTGOING'], 
+            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+    app.logger.warning("Finished calling number " + str(to_number))
+    return redirect(url_for('legislators_search'))
 
 
 
