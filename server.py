@@ -203,7 +203,7 @@ def events_for_legislator(cid, eid=None):
     events = json.dumps(events, default=lambda o: o.__dict__)
 
     title = person['title'] + ' ' + person['lastname'] + ' | Events'
-    return render_template('events.html', events=events, person=person, event_count=event_count, event_id=eid, title=title)
+    return render_template('events.html', events=events, person=person, event_count=event_count, event_id=eid, title=title, cid=cid)
 
 def events_by_cid(cid):
      #check the memcached cache first

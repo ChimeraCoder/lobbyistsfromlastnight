@@ -1,10 +1,13 @@
 raw_events = null;
 
-function loadEventListings(events){
+function loadEventListings(cid, events){
 	raw_events = events;
-	fillEventsTable(raw_events, true);
+	fillEventsTable(cid, raw_events, true);
 }
-function fillEventsTable(events, push_event_to_top){
+
+function fillEventsTable(cid, events, push_event_to_top){
+	var hash = document.location.hash.substring(1);
+
 	var event_table_body = document.getElementById('event_table_body');
 	event_table_body.innerHTML = "";
 	if(push_event_to_top){
@@ -22,10 +25,11 @@ function fillEventsTable(events, push_event_to_top){
 				continue;
 			}
 		}
-		appendEventToTable(event_table_body, e);
+		appendEventToTable(event_table_body, e, cid);
 	}
 }
-function appendEventToTable(table, e){
+
+function appendEventToTable(table, e, cid){
 	var event_row = document.createElement('tr');
 	event_row.setAttribute('id', 'event_' + e['id']);
 	if(event_id == e['id']){
@@ -39,7 +43,7 @@ function appendEventToTable(table, e){
 	appendCellToRow(event_row, e['contributions_info'], 'contributions');
 	var event_html = '<a href="http://politicalpartytime.org/party/' + e['id'] + '/" target="_blank">More Info &raquo;</a>';
 	appendCellToRow(event_row, event_html, 'event_listing');
-	var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+e['id']+'\'); return false;">Tweet &raquo;</a>';
+	var tweet_html = '<a href="#" onclick="displayTweetOverlay(\''+cid+'\', \''+e['id']+'\'); return false;">Tweet &raquo;</a>';
 	appendCellToRow(event_row, tweet_html, 'suggested_tweets');
 	table.appendChild(event_row);
 }
@@ -95,7 +99,18 @@ function events_sort_by(sort_key, ascending, is_date, is_numeric){
 	fillEventsTable(events, false);
 }
 
-function displayTweetOverlay(eventId){
+function getBitlyUrl(eventUrl) {
+	var xmlHttp = new XMLHttpRequest();
+        var apiUrl = "http://api.bitly.com/v3/shorten?apikey=R_9a6bd171e9c54f2216d31f9ecbab7f36&login=o_7hnnbv3ima&uri=" + eventUrl;
+	xmlHttp.open( "GET", apiUrl, false );
+	xmlHttp.send( null );
+	var response =  JSON.parse(xmlHttp.responseText);
+        var bitlyUrl = response.data.url;
+
+	return bitlyUrl;
+}
+
+function displayTweetOverlay(cid, eventId){
 	var wrapper = document.getElementById("tweet_overlay_wrapper");
 	wrapper.style.display = 'block';
 	wrapper.onclick = function(){
@@ -109,27 +124,28 @@ function displayTweetOverlay(eventId){
 			break;
 		}
 	}
-
-	var event_url = 'http://' + location.hostname;
-	if(location.port){
-		event_url += ':' + location.port;
-	}
-	event_url += location.pathname;
-	//http://politicalpartytime.org/party/
+        var eventUrl = "http://zencephalon.com:5000/" + cid + "/" + eventId;
+	// var eventUrl = 'http://' + location.hostname;
+	// if(location.port){
+	//	eventUrl += ':' + location.port;
+	//}
+	//eventUrl += location.pathname + '/' + eventId;
+        bitlyUrl = getBitlyUrl(eventUrl);
 
 	var listElt = document.getElementById("tweet_overlay_list");
 	listElt.innerHTML = "";
 	for(var i=0; i < thisEvent['suggested_tweets'].length; i++){
 		var tweet = thisEvent['suggested_tweets'][i];
+                tweet = tweet.replace("/link/", bitlyUrl);
 		var tweetElt = document.createElement('div');
 		tweetElt.className = 'tweet_overlay_elt';
-		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' ' + event_url + thisEvent['id']) + '/ "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
+		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
 		listElt.appendChild(tweetElt);
 	}
-	var tweetElt = document.createElement('div');
-	tweetElt.className = 'tweet_overlay_elt';
-	tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(' #lfln ' + event_url + thisEvent['id'] + '/') + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">Write your own!</a>';
-	listElt.appendChild(tweetElt);
+	var newTweetElt = document.createElement('div');
+	newTweetElt.className = 'tweet_overlay_elt';
+	newTweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(' #lfln ' + bitlyUrl + '/') + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">Write your own!</a>';
+	listElt.appendChild(newTweetElt);
 
 	document.getElementById('tweet_overlay_close').onclick = function(){
 		wrapper.style.display = 'none';
