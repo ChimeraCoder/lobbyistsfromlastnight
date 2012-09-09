@@ -16,6 +16,8 @@ import json
 import bcrypt
 import time
 import urllib2
+import csv
+import re
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -197,6 +199,8 @@ def events_for_legislator(cid):
     person = person_by_cid(cid)
     events = events_by_cid(cid)
     event_count = len(events)
+    for event in events:
+        event['suggested_tweets'] = suggested_tweets(person, event)
 
     return render_template('events.html', events=events, person=person, event_count=event_count)
 
@@ -223,6 +227,53 @@ def events_by_cid(cid):
     events.reverse()
 
     return events   
+
+def parse_tweet(tweet, event, person):
+    tweet.replace("@lawmaker",  "@"+person['twitter_id'])
+
+    contribution_regex = re.compile("\$[\d,]+")
+    if event['contributions_info']:
+        contribution_matches = contribution_regex.match(event['contributions_info'])
+        if contribution_matches:
+            contribution_amount = contribution_matches.group()
+            tweet.replace("[contribution]", contribution_amount)
+
+    tweet.replace("[venue]", "venue")
+    tweet.replace("[start time]", "start_time")
+    if event.has_key("end_time"):
+        tweet.replace("[end time]", "end_time")
+    tweet.replace("[event date]", "start_date")
+    tweet = tweet + " #lfln"
+
+    if "[" in tweet:
+        return None
+    return tweet
+
+def suggested_tweets(legislator, event):
+    suggested_tweets = []
+    tweets_csv = csv.reader(open('tweets.csv', 'rb'))
+    for row in tweets_csv:
+        keyword = row[0].lower()
+        if keyword in event['entertainment'].lower():
+	    for tweet in row[1:]:
+                suggested_tweets.append(parse_tweet(tweet, event, legislator))
+        elif keyword == 'obama' and legislator['lastname'] == 'Obama':
+            for tweet in row[1:]:
+                suggested_tweets.append(parse_tweet(tweet, event, legislator))
+        elif keyword == 'romney' and legislator['lastname'] == 'Romney':
+            for tweet in row[1:]:
+                suggested_tweets.append(parse_tweet(tweet, event, legislator))
+        elif keyword == 'generic':
+            for tweet in row[1:]:
+                suggested_tweets.append(parse_tweet(tweet, event, legislator))
+
+    def nonNone(x):
+        if x: return 1
+        else: return 0
+
+    suggested_tweets = filter(nonNone, suggested_tweets)
+    return suggested_tweets
+        
 
 def person_by_cid(cid):
     #check the memcached cache first
