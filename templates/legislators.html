@@ -25,7 +25,7 @@
 
 
 {% for (chamber, people) in legislators.iteritems() %}
-<div style="float: left; margin-right: 125px; ">
+<div style="float: left; margin-right: 125px; margin-top:20px; ">
 <div style="margin-bottom:10px;">
 <h3 style="font-family:Georgia; font-weight:normal; font-size: 24px;">{{chamber}}</h3>
 </div>
@@ -37,7 +37,7 @@
   {% endif %}
   {% for person in people %}
   <li>
-    <h4>
+    <h4 style="font-family: Georgia; font-weight: normal; font-size:18px; margin-bottom:8px;">
       {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }},
     {% if person['chamber'] == 'house' %}
      {{person['state']}}-{{person['district']}})

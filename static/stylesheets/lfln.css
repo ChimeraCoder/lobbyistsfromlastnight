@@ -278,19 +278,19 @@ tr.event_row_highlighted{
 	border-radius: 10px;
 	overflow: scroll;
 }
+
 <<<<<<< HEAD
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list{
 	margin-top: 15px;
 }
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_list .tweet_overlay_elt{
 	margin-bottom: 8px;
-=======
+}
 
 #tweet_overlay_wrapper #tweet_overlay .tweet_overlay_elt{
 	border-bottom: 1px solid #d2d2d2;
 	padding-bottom: 10px;
 	padding-top:10px;
->>>>>>> CSS Styles
 }
 
 #tweet_overlay_wrapper #tweet_overlay #tweet_overlay_close{
