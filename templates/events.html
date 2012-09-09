@@ -12,41 +12,60 @@
 <a href="https://twitter.com/intent/tweet?text={% block tweet_text %}http://www.lobbyistsfromlastnight.com{% endblock %}" class="twitter-share-button" data-count="none" data-lang="en" data-size="large">{% block default_twitter_label %}Tweet to your senator{% endblock %}</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-
-<ul>
 {% if event_count < 1 %}
   <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. </h4>
 {% endif %}
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Event</th>
+    <th>Location</th>
+    <th>Hosts</th>
+    <th>Contributions</th>
+  </tr>
 {% for event in events %}
- <li>
-    {% if event['hosts'] %}
-      <h4> Hosts: {{ ", ".join(event['hosts']) }} </h4>
-    {% else %}
-      <h4> This event has no host information. </h4>
-    {% endif %}
-    <ul>
+ <tr>
+    <td>
+      {% if event['start_date'] %}
+        {{ event["start_date"] }}
+      {% endif %}
+    </td>
+    <td>
+      {% if event['entertainment'] %}
+        {{ event['entertainment'] }}
+      {% endif %}
+    </td>
+    <td>
       {% if event['venue'] %}
-        <li> Location: {{ event["venue"] }} </li>
+        {{ event["venue"] }}
       {% endif %}
-      {% if event['entertainment'] %}
-        <li> Entertainment: {{ event['entertainment'] }} </li>
+    </td>
+    <td>
+      {% if event['hosts'] %}
+        {{ ", ".join(event['hosts']) }}
+      {% else %}
+        No information.
       {% endif %}
-      {% if event['entertainment'] %}
-        <li> Date: {{ event["start_date"] }} </li>
-      {% endif %}
+    </td>
+
+    <!--
       {% if event['entertainment'] %}
         <li> Start time: {{ event['start_time'] }} </li>
       {% endif %}
       {% if event['end_time'] %}
         <li> End time: {{ event['end_time'] }} </li>
       {% endif %}
+    -->
+    <td>
       {% if event['entertainment'] %}
-        <li> Contributions: {{ event['contributions_info'] }} </li>
+        {{ event['contributions_info'] }}
       {% endif %}
-    </ul>
-  </li>
+    </td>
+    </tr>
+  
 {% endfor %}
-</ul>
+</table>
 
 <h6><a href="/legislators/">other legislators</a></h6>
 
