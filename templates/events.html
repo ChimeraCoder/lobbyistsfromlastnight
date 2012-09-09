@@ -4,10 +4,14 @@
 {% block body %}
 {% block intro %} 
 
+<div id="lawmaker">
+
         <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 25px;"/>
 
-<h3>Events for {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }}) </h3>
+<h3>Events for </h3>
+<span class="politician">{{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})</span> 
 <br/>
+
 
 <a href="https://twitter.com/intent/tweet?text={% block tweet_text %}http://www.lobbyistsfromlastnight.com{% endblock %}" class="twitter-share-button" data-count="none" data-lang="en" data-size="large">{% block default_twitter_label %}Tweet to your senator{% endblock %}</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -16,32 +20,34 @@
   <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. </h4>
 {% endif %}
 
+</div>
+
 <table>
   <tr>
-    <th>Date</th>
-    <th>Event</th>
-    <th>Location</th>
-    <th>Hosts</th>
-    <th>Contributions</th>
+    <th class="date">Date</th>
+    <th class="event">Event</th>
+    <th class="location">Location</th>
+    <th class="hosts">Hosts</th>
+    <th class="contributions">Contributions</th>
   </tr>
 {% for event in events %}
  <tr>
-    <td>
+    <td class="date">
       {% if event['start_date'] %}
         {{ event["start_date"] }}
       {% endif %}
     </td>
-    <td>
+    <td class="event">
       {% if event['entertainment'] %}
         {{ event['entertainment'] }}
       {% endif %}
     </td>
-    <td>
+    <td class="location">
       {% if event['venue'] %}
         {{ event["venue"] }}
       {% endif %}
     </td>
-    <td>
+    <td class="hosts">
       {% if event['hosts'] %}
         {{ ", ".join(event['hosts']) }}
       {% else %}
@@ -57,7 +63,7 @@
         <li> End time: {{ event['end_time'] }} </li>
       {% endif %}
     -->
-    <td>
+    <td class="contributions">
       {% if event['entertainment'] %}
         {{ event['contributions_info'] }}
       {% endif %}

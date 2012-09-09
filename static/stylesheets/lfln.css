@@ -99,4 +99,56 @@ div.navigation_right {
 	margin-top: 20px;
 }
 
+table {
+	width:960px;
+}
+
+td, th {
+	padding-right:10px;
+	padding-bottom:10px;
+	padding-top:10px;
+	margin-right: 20px;
+
+	text-align: left;
+	vertical-align:top;
+	border-top: 1px solid #dbdbdb;
+
+	
+}
+
+th.date, td.date {
+width:110px;	
+}
+
+th.event, td.event {
+width:200px;
+}
+
+th.location, td.location {
+width:300px;
+}
+
+th.hosts, td.hosts {
+width:200px;
+}
+
+th.contributions, td.contributions {
+width:200px;
+}
+
+#lawmaker {
+	margin-bottom: 20px;
+}
+
+.politician {
+	font-family: Georgia;
+	font-size: 34px;
+	font-weight: normal;
+}
+
+#lawmaker h3 {
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 2px;
+}
 
