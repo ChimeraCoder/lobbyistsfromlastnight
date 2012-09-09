@@ -47,7 +47,6 @@ MEMCACHED_TIMEOUT = 10 * 60
 MEMCACHED_TIMEOUT_SUNLIGHT = 24 * 60 * 60
 
 #TODO remove this!
-app.debug = True
 login_manager = LoginManager()
 login_manager.setup_app(app)
 
@@ -58,7 +57,16 @@ OBAMA_CID = 'N00009638'
 
 sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
 
-    
+import logging
+from logging import Formatter, FileHandler
+file_handler = FileHandler('runlogs.log', mode='a')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(Formatter(
+    '%(asctime)s %(levelname)s: %(message)s '
+        '[in %(pathname)s:%(lineno)d]'
+        ))
+app.logger.addHandler(file_handler)
+
 @app.route('/')
 def welcome():
     return render_template("home.html")
@@ -330,6 +338,7 @@ def legislators_search():
         title = "Legislators for " + zipcode
         return render_template('legislators.html', zipcode=zipcode, legislators=legislators, title=title)
     else:
+        app.logger.warning("Could not load zipcode; retrying. Zipcode: " + str(request.args.get("zipcode", None)))
         title = "Legislators"
         return render_template('legislators_form.html', title=title)
 
@@ -396,4 +405,4 @@ def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=app.config['DEBUG'])
