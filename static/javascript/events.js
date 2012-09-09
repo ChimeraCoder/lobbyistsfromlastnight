@@ -2,9 +2,9 @@ raw_events = null;
 
 function loadEventListings(events){
 	raw_events = events;
-	fillEventsTable(raw_events);
+	fillEventsTable(raw_events, true);
 }
-function fillEventsTable(events){
+function fillEventsTable(events, scrollToHighlightedEvent){
 	var event_table_body = document.getElementById('event_table_body');
 	event_table_body.innerHTML = "";
 	for(var i=0; i < events.length; i++){
@@ -26,7 +26,7 @@ function fillEventsTable(events){
 		appendCellToRow(event_row, event_html, 'event_listing');
 		event_table_body.appendChild(event_row);
 	}
-	if(event_id){
+	if(event_id && scrollToHighlightedEvent){
 		setTimeout(function(){
 			document.getElementById('event_' + event_id).scrollIntoView(true);
 		}, 400);
@@ -81,7 +81,7 @@ function events_sort_by(sort_key, ascending, is_date, is_numeric){
 			return 0;
 		}
 	}) 
-	fillEventsTable(events)
+	fillEventsTable(events, false);
 }
 
 function displayTweetOverlay(eventId){
@@ -112,7 +112,7 @@ function displayTweetOverlay(eventId){
 		var tweet = thisEvent['suggested_tweets'][i];
 		var tweetElt = document.createElement('div');
 		tweetElt.className = 'tweet_overlay_elt';
-		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' ' + event_url + thisEvent['id']) + ' "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
+		tweetElt.innerHTML = '<a href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet + ' ' + event_url + thisEvent['id']) + '/ "class="twitter-share-button" data-count="none" data-lang="en" data-size="large">' + tweet + '</a>';
 		listElt.appendChild(tweetElt);
 	}
 	var tweetElt = document.createElement('div');
