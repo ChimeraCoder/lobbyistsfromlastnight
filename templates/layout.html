@@ -15,20 +15,25 @@
                 <div id="header" onclick="window.location='/';" style="cursor: pointer;">
                     <div class="navigation">
                     	<div class="navigation_left">
-                        	<span class="nav_item"><a href="{{ url_for('welcome') }}">home</a></span>
+                        	<!-- <span class="nav_item"><a href="{{ url_for('welcome') }}">home</a></span> -->
                         	<!-- <span class="nav_item"><a href="{{ url_for('about') }}">about</a></span> -->
+<<<<<<< HEAD
                         	<span class="nav_item"><a href="/events/N00009638">pres. obama</a></span>
                             <span class="nav_item"><a href="/events/N00000286">gov. romney</a></span>
                             <span class="nav_item"><a href="/twitter">#LFLN</a></span>
+=======
+                        	<span class="nav_item"><a href="/events/N00009638">obama's events</a></span>
+                        	<span class="nav_item"><a href="/events/N00000286">Romney's events</a></span>
+>>>>>>> top bar links
                         </div>
                         <div class="navigation_right">
                         	<span class="nav_item"><a href="{{ url_for('legislators_search') }}">your legislators</a></span>
                         	{% if user_authenticated %}
-                       	     <span class="nav_item"><a href="/">Profile</a></li>
-                       	     <span class="nav_item"><a href="{{ url_for('logout') }}">logout</a></span>
+                       	     <!--<span class="nav_item"><a href="/">Profile</a></li>-->
+                       	     <!--<span class="nav_item"><a href="{{ url_for('logout') }}">logout</a></span>-->
                        	     {% else %}
-                            <span class="nav_item"><a href="{{ url_for('login') }}">login</a></span>
-                            <span class="nav_item"><a href="{{ url_for('signup') }}">sign up</a></span>
+                            <!--<span class="nav_item"><a href="{{ url_for('login') }}">login</a></span>-->
+                            <!--<span class="nav_item"><a href="{{ url_for('signup') }}">sign up</a></span>-->
                             {% endif %}
                             <span class="nav_item_last"><a href="{{ url_for('contact') }}">contact us</a></span>
                         </div>
