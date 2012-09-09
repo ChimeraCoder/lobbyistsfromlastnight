@@ -308,3 +308,8 @@ tr.event_row_highlighted{
 	font-size: 36px;
 }
 
+th.suggested_tweets, td.suggested_tweets {
+	background-color: red;
+	
+}
+
