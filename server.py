@@ -69,7 +69,9 @@ def call_twilio():
     app.logger.warning("Calling number " + str(to_number))
     call = client.calls.create(to=to_number, 
             from_= app.config['TWILIO_OUTGOING'], 
-            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+            url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3E%20Why%20did%20you%20not%20invite%20me%20to%20the%20pheasant%20hunt%2C%20Shoomer%3F%20%0A%0AAnd%20I%20thought%2C%20well%20closing%20Gitmo%20--%20why%20close%20that%2C%20we%20spent%20so%20much%20money%20on%20it.%20But%2C%20I%20thought%20maybe%20as%20an%20excuse%20--%20what%20do%20you%20mean%20shut%20up%3F%0A%0A(LAUGHTER)%0A%0AOK%2C%20I%20thought%20maybe%20it%20was%20just%20because%20somebody%20had%20the%20stupid%20idea%20of%20trying%20terrorists%20in%20downtown%20New%20York%20City.%3C%2FSay%3E%0A%3C%2FResponse%3E&")
+            #url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3EAnd%20I%20thought%2C%20well%20closing%20Gitmo%20--%20why%20close%20that%2C%20we%20spent%20so%20much%20money%20on%20it.%20But%2C%20I%20thought%20maybe%20as%20an%20excuse%20--%20what%20do%20you%20mean%20shut%20up%3F%0A%0A(LAUGHTER)%0A%0AOK%2C%20I%20thought%20maybe%20it%20was%20just%20because%20somebody%20had%20the%20stupid%20idea%20of%20trying%20terrorists%20in%20downtown%20New%20York%20City.%3C%2FSay%3E%0A%3C%2FResponse%3E&")
+            #url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3EWhy%20was%20I%20not%20invited%20to%20your%20event%3F%20Do%20you%20not%20love%20me%3F%3C%2FSay%3E%0A%3C%2FResponse%3E&")
     app.logger.warning("Finished calling number " + str(to_number))
     return redirect(url_for('legislators_search'))
 
