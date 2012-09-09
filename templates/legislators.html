@@ -5,10 +5,15 @@
 {% block intro %} 
 
 <div style="float: right;">
+<div id="zip_form">
 <form name="legislators_form">
+<fieldset>
+
     <input type="text" placeholder="Zipcode" style="width:100px; text-align: right;" name="zipcode"/>
-    <button class="btn btn-info" type="submit">Search another district</button>
+    <input type="submit" value="Search another district"/>
+</fieldset>
 </form>
+</div>
 </div>
 
 <h3>Legislators representing {{ zipcode }}</h3>
