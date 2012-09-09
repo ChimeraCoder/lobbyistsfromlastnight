@@ -242,6 +242,10 @@ p.about {
 
 }
 
+tr.event_row_highlighted{
+	background-color: rgba(200,200,200,0.3);
+}
+
 
 #tweet_overlay_wrapper{
 	display: none;
