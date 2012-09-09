@@ -1,2 +1,97 @@
 /** css here **/
 
+body {
+	
+}
+
+div.navigation {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	display: inline;
+}
+
+div.navigation_left, div.navigation_right {
+	font-family: Georgia;
+	margin-top: 100px;
+}
+
+div.navigation {
+	
+}
+
+.nav_item {
+	margin-right: 20px;
+}
+
+div.navigation_left {
+	float:left;
+}
+
+div.navigation_right {
+	float:right;
+	text-align: right;
+}
+
+#header {
+	text-align: center;
+	background-image: url("http://larrybuch.com/lfln/logo.png");
+	background-repeat: no-repeat;
+	margin-top: 20px;
+	height:172px;
+}
+
+#title {
+	text-align: center;
+	font-family: Georgia;
+	font-weight: normal;
+}
+
+#maintitle {
+	text-transform: uppercase;
+	font-size: 34pt;
+	letter-spacing: 4px;
+	font-weight: normal;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+#subtitle {
+	font-style: italic;
+	font-size: 20px;
+	margin-bottom: 60px;
+}
+
+#footer {
+	margin-top: 30px;
+	margin-bottom: 40px;
+}
+
+#footer_left, #footer_right, #footer_center {
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 1px;
+}
+
+#footer_left {
+	width:320px;
+	float:left;
+	font-weight: bold;
+}
+
+#footer_center {
+	width:320px;
+	float:left;
+	text-align: center;
+	margin-top: 20px;
+	font-family: Georgia;
+}
+
+#footer_right {
+	float:right;
+	width:300px;
+	text-align:right;
+	font-weight: bold;
+
+}
+

@@ -7,41 +7,74 @@
     <title>{% block title %}Welcome{% endblock %} | LFLN</title>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="span4 offset6">
-                <h1 id="maintitle">Lobbyists From Last Night</h1>
-                <div id="subtitle">{% block subtitle %}Lobbyists From Last Night{% endblock %}</div>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span3">
-                <div class="well sidebar-nav">
-                    <ul class="nav nav-list">
-                        <li class="nav-header"><a href="{{ url_for('welcome') }}">home</a></li>
-                        <li><a href="{{ url_for('about') }}">about</a></li>
-                        <li><a href="/events/N00009638">pres. obama</a></li>
-                        <li><a href="/events/N00000286">gov. romney</a></li>
-                        <li><a href="{{ url_for('legislators_search') }}">your legislators</a></li>
-                        {% if user_authenticated %}
-                            <li><a href="/">Profile</a></li>
-                            <li><a href="{{ url_for('logout') }}">logout</a></li>
-                        {% else %}
-                            <li><a href="{{ url_for('login') }}">login</a></li>
-                            <li><a href="{{ url_for('signup') }}">sign up</a></li>
-                        {% endif %}
-                        <li><a href="{{ url_for('contact') }}">contact us</a></li>
-                    </ul>
+            <div class="span12">
+                <div id="header">
+                    <div class="navigation">
+                    	<div class="navigation_left">
+                        	<span class="nav_item"><a href="{{ url_for('welcome') }}">home</a></span>
+                        	<span class="nav_item"><a href="{{ url_for('about') }}">about</a></span>
+                        	<span class="nav_item"><a href="/events/N00009638">pres. obama</a></span>
+                        	<span class="nav_item"><a href="/events/N00000286">gov. romney</a></span>
+                        </div>
+                        <div class="navigation_right">
+                        	<span class="nav_item"><a href="{{ url_for('legislators_search') }}">your legislators</a></span>
+                        	{% if user_authenticated %}
+                       	     <span class="nav_item"><a href="/">Profile</a></li>
+                       	     <span class="nav_item"><a href="{{ url_for('logout') }}">logout</a></span>
+                       	     {% else %}
+                            <span class="nav_item"><a href="{{ url_for('login') }}">login</a></span>
+                            <span class="nav_item"><a href="{{ url_for('signup') }}">sign up</a></span>
+                            {% endif %}
+                            <span class="nav_item"><a href="{{ url_for('contact') }}">contact us</a></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="span9">
-                {% block body %}
-
-                <div id="intro">{% block intro %}{% endblock %}</div> 
-
-
-                {% endblock %}
+            
+        <div class="row">
+            <div class="span12" id="title">
+                <h1 id="maintitle">Lobbyists From Last Night</h1>
+                <div id="subtitle">{% block subtitle %}It's 10 p.m. Do you know where your lawmakers are?{% endblock %}</div>
             </div>
+        </div>
+
+            
+            
+            <div class="span9">
+            	<div id="content">
+               	 	{% block body %}
+
+               	 		<div id="intro">{% block intro %}{% endblock %}</div> 
+
+               	 	{% endblock %}
+            	</div>
+            </div>
+            
+            <div class="span12">
+            	<div id="footer">
+            		<img src="http://larrybuch.com/lfln/footer.png" />
+            		
+            			<div id="footer_left">
+            				<p>Lobbyists From Last Night</p>
+            			</div>
+            			
+            			<div id="footer_center">
+            				<p>Democracy + code + comedy in action.</p>
+            			</div>
+            			
+            			<div id="footer_right">
+            				<p>Pics or it didn’t happen.</p>
+            			</div>
+            			
+            			<br />
+            			<br />
+            			
+            	</div>
+            </div>
+
+
         </div>
     </div>
     
