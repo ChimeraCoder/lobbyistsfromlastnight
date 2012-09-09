@@ -47,7 +47,7 @@
   </h4>
     <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
     <ul style="list-style:none;" >
-      <li><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
+      <li style="font-size:15px; font-weight:bold; margin-bottom:6px;"><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
       {% if person['twitter_id'] %}
         <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
       {% else %}

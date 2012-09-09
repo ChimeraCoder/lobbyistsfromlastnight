@@ -226,16 +226,17 @@ th.suggested_tweets, td.suggested_tweets{
 
 p.about {
 	font-family: Georgia;
-	font-size: 34px;
+	font-size: 32px;
 	line-height: 40px;
 	color:#525252;
 }
 
 p.about2 {
 	font-family: Georgia;
-	font-size: 18px;
+	font-size: 13px;
 	line-height: 20px;
 	color:#525252;
+	text-align: center;
 }
 
 
