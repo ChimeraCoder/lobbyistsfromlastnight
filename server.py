@@ -258,6 +258,8 @@ def suggested_tweets(legislator, event):
     tweets_csv = csv.reader(open('tweets.csv', 'rb'))
     for row in tweets_csv:
         keyword = row[0].lower()
+        if event['entertainment'] == None:
+            continue
         if keyword in event['entertainment'].lower():
 	    for tweet in row[1:]:
                 suggested_tweets.append(parse_tweet(tweet, event, legislator))
