@@ -51,6 +51,9 @@ login_manager.setup_app(app)
 
 MAX_SEARCH_RESULTS = 20
 
+ROMNEY_CID = 'N00000286'
+OBAMA_CID = 'N00009638'
+
 sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
 
     
@@ -231,7 +234,7 @@ def person_by_cid(cid):
         if people and len(people) > 0:
             person = people[0]
         else:
-            if cid == 'N00009638':
+            if cid == OBAMA_CID:
                 person = {
                     'title' : 'President',
                     'firstname' : 'Barack',
@@ -240,7 +243,7 @@ def person_by_cid(cid):
                     'party' : 'D',
                     'twitter_id' : 'BarackObama'
                 }
-            elif cid == 'N00000286':
+            elif cid == ROMNEY_CID:
                 person = {
                     'title' : 'Governor',
                     'firstname' : 'Willard',
