@@ -292,7 +292,10 @@ def suggested_tweets(legislator, event):
 
     suggested_tweets = filter(nonNone, suggested_tweets)
     return suggested_tweets
-        
+
+def telephone_by_cid(cid):
+    person = person_by_cid(cid);
+    return person.get('phone', None)        
 
 def person_by_cid(cid):
     #check the memcached cache first
