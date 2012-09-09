@@ -4,10 +4,14 @@
 {% block body %}
 {% block intro %} 
 
+<div id="lawmaker">
+
         <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 25px;"/>
 
-<h3>Events for {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }}) </h3>
+<h3>Events for </h3>
+<span class="politician">{{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})</span> 
 <br/>
+
 
 <a href="https://twitter.com/intent/tweet?text={% block tweet_text %}http://www.lobbyistsfromlastnight.com{% endblock %}" class="twitter-share-button" data-count="none" data-lang="en" data-size="large">{% block default_twitter_label %}Tweet to your senator{% endblock %}</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -16,14 +20,16 @@
   <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. </h4>
 {% endif %}
 
+</div>
+
 <table>
   <thead>
   <tr>
-    <th><a href="#" onclick="events_sort_by('start_date', false, true, false); return false;">Date</a></th>
-    <th><a href="#" onclick="events_sort_by('entertainment', true, false, false); return false;">Event</th>
-    <th><a href="#" onclick="events_sort_by('venue', true, false, false); return false;">Location</th>
-    <th><a href="#" onclick="events_sort_by('hosts', true, false, false); return false;">Hosts</th>
-    <th><a href="#" onclick="events_sort_by('contributions_info', false, false, true); return false;">Contributions</th>
+    <th class="date"><a href="#" onclick="events_sort_by('start_date', false, true, false); return false;">Date</a></th>
+    <th class="event"><a href="#" onclick="events_sort_by('entertainment', true, false, false); return false;">Event</th>
+    <th class="location"><a href="#" onclick="events_sort_by('venue', true, false, false); return false;">Location</th>
+    <th class="hosts"><a href="#" onclick="events_sort_by('hosts', true, false, false); return false;">Hosts</th>
+    <th class="contributions"><a href="#" onclick="events_sort_by('contributions_info', false, false, true); return false;">Contributions</th>
   </tr>
   </thead>
   <tbody id="event_table_body"></tbody>
