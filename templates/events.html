@@ -4,7 +4,8 @@
 {% block body %}
 {% block intro %} 
 
-    
+        <img src="http://api.twitter.com/1/users/profile_image/?screen_name={{person['twitter_id']}}&size=bigger" style="float: left; width:73px; height: 73px; margin-right: 25px;"/>
+
 <h3>Events for {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }}) </h3>
 <br/>
 
