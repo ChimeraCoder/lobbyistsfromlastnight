@@ -9,10 +9,8 @@ from flask import flash
 from flask import jsonify
 from functools import wraps
 import os
-import sys
 import sunlight
 import json
-import bcrypt
 import time
 import urllib2
 import csv
@@ -24,28 +22,12 @@ app.config.from_envvar('APP_SETTINGS')
 app.secret_key = os.getenv("SESSION_SECRET")
 
 from werkzeug.contrib.cache import MemcachedCache
-from flask.ext.wtf import Form, TextField, PasswordField, validators, BooleanField
-
-###HACK THAT FIXES PYMONGO BUG
-#http://stackoverflow.com/questions/10401499/mongokit-importerror-no-module-named-objectid-error
-#TODO remove this once the upstream bug is fixed
-import sys 
-import pymongo
-import bson.objectid
-pymongo.objectid = bson.objectid
-sys.modules["pymongo.objectid"] = bson.objectid
-pymongo.binary = bson.binary
-sys.modules["pymongo.binary"] = bson.binary
-#### END HACK THAT WILL BE REMOVED
 
 cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], 
                        username = app.config['MEMCACHE_USERNAME'], 
                        password = app.config['MEMCACHE_PASSWORD'], 
                        binary=True)
 cache = MemcachedCache(cache)
-
-from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
-db = MongoAlchemy(app)
 
 MEMCACHED_TIMEOUT = 10 * 60
 MEMCACHED_TIMEOUT_SUNLIGHT = 24 * 60 * 60
