@@ -18,6 +18,7 @@ import time
 import urllib2
 import csv
 import re
+import pylibmc
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -38,7 +39,11 @@ pymongo.binary = bson.binary
 sys.modules["pymongo.binary"] = bson.binary
 #### END HACK THAT WILL BE REMOVED
 
-cache = MemcachedCache([app.config['MEMCACHED_HOST'] + ":" + app.config['MEMCACHED_PORT']])
+cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], 
+                       username = app.config['MEMCACHE_USERNAME'], 
+                       password = app.config['MEMCACHE_PASSWORD'], 
+                       binary=True)
+cache = MemcachedCache(cache)
 
 from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
 db = MongoAlchemy(app)
@@ -437,4 +442,4 @@ def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=app.config['DEBUG'])
+    app.run(host='0.0.0.0', port = app.config['PORT'], debug=app.config['APP_DEBUG'])

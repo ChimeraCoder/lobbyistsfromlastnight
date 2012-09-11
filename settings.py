@@ -15,8 +15,9 @@ TWILIO_ACCOUNT = environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_TOKEN = environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_OUTGOING = environ.get("TWILIO_OUTGOING")
 
+PORT = environ.get('PORT', 5000)
 
-DEBUG = environ.get("APP_DEBUG", False)
+APP_DEBUG = environ.get("APP_DEBUG", False)
 
 APPLICATION_ROOT = environ.get('APPLICATION_ROOT')
 
