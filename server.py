@@ -60,7 +60,7 @@ MAX_SEARCH_RESULTS = 20
 ROMNEY_CID = 'N00000286'
 OBAMA_CID = 'N00009638'
 
-sunlight.config.API_KEY = "5448bd94e5da4e4d8ca0052e16cd77e0"
+sunlight.config.API_KEY = app.config['SUNLIGHT_API_KEY']
 
 
 from twilio.rest import TwilioRestClient
