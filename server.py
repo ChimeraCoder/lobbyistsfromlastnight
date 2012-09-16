@@ -49,7 +49,7 @@ from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
 db = MongoAlchemy(app)
 
 MEMCACHED_TIMEOUT = 10 * 60
-MEMCACHED_TIMEOUT_SUNLIGHT = 24 * 60 * 60
+MEMCACHED_TIMEOUT_SUNLIGHT = 3 * 60 * 60
 
 #TODO remove this!
 login_manager = LoginManager()
@@ -239,12 +239,19 @@ def events_by_cid(cid):
     for e in events:
         e['fields']['id'] = e['pk']
     events = map(lambda e: e['fields'], events)
+
+    # print(events)
+    # for e in events:
+    #     if e['start_date']:
+    # 	   e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
+    #        print(e['start_date'])
+    #        print(e['start_date'].tm_year)
+    # events.sort(key=lambda e: e['start_date'].tm_year)
     for e in events:
-	e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
-    events.sort(key=lambda e: e['start_date'].tm_year)
-    for e in events:
-	e['start_date'] = time.strftime("%b %d, %Y", e['start_date'])
-    events.reverse()
+        if e['start_date']:
+           e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
+           e['start_date'] = time.strftime("%b %d, %Y", e['start_date'])
+    # events.reverse()
 
     return events   
 
