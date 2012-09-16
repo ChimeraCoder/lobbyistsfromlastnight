@@ -3,6 +3,7 @@ event_table_cid = null;
 
 function loadEventListings(cid, events){
 	raw_events = events;
+	events_sort_by('start_date', false, true, false);
 	fillEventsTable(cid, raw_events, true);
 	event_table_cid=cid;
 }
