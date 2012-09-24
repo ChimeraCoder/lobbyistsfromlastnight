@@ -3,6 +3,7 @@
 
 clean:
 	find . -iname \*.pyc -delete
+	rm -rf build/
 
 
 dev-install:
