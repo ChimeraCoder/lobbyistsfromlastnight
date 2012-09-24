@@ -23,11 +23,7 @@ app.secret_key = os.getenv("SESSION_SECRET")
 
 from werkzeug.contrib.cache import MemcachedCache
 
-cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], 
-                       username = app.config['MEMCACHE_USERNAME'], 
-                       password = app.config['MEMCACHE_PASSWORD'], 
-                       binary=True)
-cache = MemcachedCache(cache)
+cache = MemcachedCache(['127.0.0.1:11211'])
 
 MEMCACHED_TIMEOUT = 10 * 60
 MEMCACHED_TIMEOUT_SUNLIGHT = 3 * 60 * 60
@@ -109,7 +105,6 @@ def events_by_cid(cid):
            e['start_date'] = time.strptime(e['start_date'], "%Y-%m-%d")
            e['start_date'] = time.strftime("%b %d, %Y", e['start_date'])
     # events.reverse()
-
     return events   
 
 def parse_tweet(tweet, event, person):
