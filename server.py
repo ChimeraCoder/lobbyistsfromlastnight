@@ -67,7 +67,7 @@ from twilio.rest import TwilioRestClient
 client = TwilioRestClient()
 
 
-@app.route('/call/twilio/', )
+@app.route('/call/twilio', )
 def call_twilio():
     to_number = request.args.get('to_number')
     to_number = os.environ.get("TWILIO_OVERRIDE")
