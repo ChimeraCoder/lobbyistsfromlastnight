@@ -423,5 +423,5 @@ def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass
 
 if __name__ == '__main__':
-        print("port: ", app.config['PORT'])
+    print("port: ", app.config['PORT'])
     app.run(host='0.0.0.0', port = app.config['PORT'], debug=app.config['APP_DEBUG'])
