@@ -17,4 +17,5 @@ pylibmc==1.2.3
 pymongo==2.3
 python-memcached==1.48
 sunlight==1.1.5
+twilio==3.3.10
 wsgiref==0.1.2
