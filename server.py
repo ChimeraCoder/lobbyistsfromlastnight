@@ -19,6 +19,8 @@ import urllib2
 import csv
 import re
 import pylibmc
+import parsedatetime as pdt
+
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -64,17 +66,23 @@ from twilio.rest import TwilioRestClient
 client = TwilioRestClient()
 
 
-@app.route('/call/twilio', methods=['GET', 'POST'])
+@app.route('/sms/subscribe', methods=['GET', 'POST'])
 def call_twilio():
-    to_number = request.args.get('to_number')
-    to_number = os.environ.get("TWILIO_OVERRIDE")
-    app.logger.warning("Calling number " + str(to_number))
-    call = client.calls.create(to=to_number, 
+    phone_number = request.args.get('phone_number') #The number to which SMS text messages will be sent
+    legislator_id = request.args.get('to_number') #The legislator's ID, according to Sunlight
+    #TODO make sure the phone number format is correct; Twilio is picky about this.
+
+    subscription = SMSSubscription(phone_number = phone_number, legislator_id = legislator_id)
+    subscription.save()
+
+
+    #Send a confirmation message to that number
+    call = client.sms.messages.create(to=phone_number
             from_= app.config['TWILIO_OUTGOING'], 
-            url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3E%20Why%20did%20you%20not%20invite%20me%20to%20the%20pheasant%20hunt%2C%20Shoomer%3F%20%0A%0AAnd%20I%20thought%2C%20well%20closing%20Gitmo%20--%20why%20close%20that%2C%20we%20spent%20so%20much%20money%20on%20it.%20But%2C%20I%20thought%20maybe%20as%20an%20excuse%20--%20what%20do%20you%20mean%20shut%20up%3F%0A%0A(LAUGHTER)%0A%0AOK%2C%20I%20thought%20maybe%20it%20was%20just%20because%20somebody%20had%20the%20stupid%20idea%20of%20trying%20terrorists%20in%20downtown%20New%20York%20City.%3C%2FSay%3E%0A%3C%2FResponse%3E&")
-            #url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3EAnd%20I%20thought%2C%20well%20closing%20Gitmo%20--%20why%20close%20that%2C%20we%20spent%20so%20much%20money%20on%20it.%20But%2C%20I%20thought%20maybe%20as%20an%20excuse%20--%20what%20do%20you%20mean%20shut%20up%3F%0A%0A(LAUGHTER)%0A%0AOK%2C%20I%20thought%20maybe%20it%20was%20just%20because%20somebody%20had%20the%20stupid%20idea%20of%20trying%20terrorists%20in%20downtown%20New%20York%20City.%3C%2FSay%3E%0A%3C%2FResponse%3E&")
-            #url="http://twimlets.com/echo?Twiml=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CResponse%3E%0A%20%20%20%20%3CSay%3EWhy%20was%20I%20not%20invited%20to%20your%20event%3F%20Do%20you%20not%20love%20me%3F%3C%2FSay%3E%0A%3C%2FResponse%3E&")
-    app.logger.warning("Finished calling number " + str(to_number))
+            body="Thank you for subscribing to LFLN alerts! If you don't want to receive these anymore, reply STOP")
+    
+    #TODO implement 'reply STOP to stop!
+
     return redirect(url_for('legislators_search'))
 
 
@@ -177,7 +185,11 @@ def unauthorized():
 @app.context_processor
 def inject_user_authenticated():
     return dict(user_authenticated = current_user.is_authenticated())
-    
+   
+
+class SMSSubscription(db.Document):
+    phone_number = db.StringField()
+    legislator_id = db.StringField() #The same one that is used for the /events/<cid> route
 
 class MongoUser(db.Document, UserMixin):
     username = db.StringField()
