@@ -22,7 +22,7 @@ import pylibmc
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
-app.secret_key = os.getenv("SESSION_SECRET")
+app.secret_key = app.config["SESSION_SECRET"]
 
 from werkzeug.contrib.cache import MemcachedCache
 from flask.ext.wtf import Form, TextField, PasswordField, validators, BooleanField
@@ -39,10 +39,7 @@ pymongo.binary = bson.binary
 sys.modules["pymongo.binary"] = bson.binary
 #### END HACK THAT WILL BE REMOVED
 
-cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], 
-                       username = app.config['MEMCACHE_USERNAME'], 
-                       password = app.config['MEMCACHE_PASSWORD'], 
-                       binary=True)
+cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], binary=True)
 cache = MemcachedCache(cache)
 
 from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
