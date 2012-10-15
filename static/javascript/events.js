@@ -155,5 +155,16 @@ function displayTweetOverlay(cid, eventId){
 	}
 }
 
+function displaySubscribeOverlay(){
+	var wrapper = document.getElementById("subscribe_overlay_wrapper");
+	wrapper.style.display = 'block';
+	// wrapper.onclick = function(){
+	// 	wrapper.style.display = 'none';
+	// }
 
+}
 
+function closeSubscribe(){
+	var wrapper = document.getElementById("subscribe_overlay_wrapper");
+	wrapper.style.display = 'none';	
+}

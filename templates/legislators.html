@@ -25,7 +25,7 @@
 
 
 {% for (chamber, people) in legislators.iteritems() %}
-<div style="float: left; margin-right: 125px; margin-top:20px; ">
+<div class="legislator_wrapper">
 <div style="margin-bottom:20px;">
 <h3 style="font-family:Georgia; font-weight:normal; font-size: 24px;">{{chamber}}</h3>
 </div>
@@ -36,7 +36,7 @@
     <em>That's odd, no one represents {{zipcode}}. Instead, check out President Obama & Governor Romney's events.</em>
   {% endif %}
   {% for person in people %}
-  <li>
+  <li class="legislator_block">
     <h4 style="font-family: Georgia; font-weight: normal; font-size:18px; margin-bottom:8px;">
       {{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }},
     {% if person['chamber'] == 'house' %}
@@ -50,23 +50,25 @@
     {% else %}
     <img src="/static/images/notwitter.png" style="float: left; width:73px; height: 73px; margin-right: 10px;"/>
     {% endif %}
-    <ul style="list-style:none;" >
-      <li style="font-size:15px; font-weight:bold; margin-bottom:6px;"><a href="/events/{{person['crp_id']}}">Event Calendar</a></li>
+    <ul class="legislator_subblock" >
+      <li class="events_link"><a href="/events/{{person['crp_id']}}">Browse Events &raquo;</a></li>
       {% if person['twitter_id'] %}
-        <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a></li>
+        <li><a href="http://twitter.com/{{person['twitter_id']}}" target="_blank">@{{person['twitter_id']}}</a>
       {% else %}
-        <li><i>(no twitter)</i></li>
+        <i>(no twitter)</i>
       {% endif %}
+      |
       {% if person['facebook_id'] %}
-        <li><a href="http://www.facebook.com/{{person['facebook_id']}}" target="_blank">facebook</a></li>
+       <a href="http://www.facebook.com/{{person['facebook_id']}}" target="_blank">facebook</a>
       {% else %}
-        <li><i>(no facebook)</i></li>
+        <i>(no facebook)</i>
       {% endif %}
-
-      <li><a href="http://votesmart.org/candidate/{{person['votesmart_id']}}" target="_blank">votesmart.org</a></li>
+      |
+      <a href="http://votesmart.org/candidate/{{person['votesmart_id']}}" target="_blank">votesmart.org</a></li>
     </ul>
     <br/>
   </li>
+  <div style="clear: both;"></div>
 {% endfor %}
 </ul>
 </div>

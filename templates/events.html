@@ -18,13 +18,20 @@
 <span class="politician">{{ person['title'] }} {{ person['firstname'] }} {{ person['middlename'] }} {{ person['lastname'] }} ({{ person['party'] }})</span> 
 </div>
 
-<p style="font-family: Georgia; font-size:16px; font-style:italic; line-height:22px; margin-left:90px;">Looks like the {{ person['title'] }} has been rubbing elbows with the elite. Why weren't you — their most loyal constituent — invited? Tweet at {{ person['firstname'] }} to tell them how you feel. </p>
+<div id="legislator_info">
+<p>Looks like the {{ person['title'] }} has been rubbing elbows with the elite. Why weren't you — their most loyal constituent — invited? Tweet at {{ person['firstname'] }} to tell them how you feel. </p>
 {% if person['phone'] %}
-<p style="font-family: Georgia; font-size:16px; font-style:italic; line-height:22px; margin-left:90px;">
+<p>
 Want to call {{person['title']}} {{person['lastname']}}? <a href="#">{{person['phone']}}</a>
   </p>
   {% endif %}
 <br/>
+
+<div id="events_subscription_prompt">
+  <a href="#" class="subscribe_btn" onclick="displaySubscribeOverlay(); return false;">Subscribe</a> &nbsp; to find out whenever we discover another event for {{person['title']}} {{person['lastname']}}.
+</div>
+
+</div>
 
 {% if event_count < 1 %}
   <h4> No events were found for your congressman at this time. Maybe our API is down, or maybe he needs some love. Instead, check out President Obama & Governor Romney's events.  </h4>
@@ -49,11 +56,39 @@ Want to call {{person['title']}} {{person['lastname']}}? <a href="#">{{person['p
 
 <h6><a href="/legislators/">other legislators</a></h6>
 
-<div id="tweet_overlay_wrapper">
-<div id="tweet_overlay">
+<div class="overlay_wrapper" id="tweet_overlay_wrapper">
+<div class="overlay" id="tweet_overlay">
   <div id="tweet_overlay_close">[<a href="#">close</a>]</div>
   <h2>Select your tweet</h2>
   <div id="tweet_overlay_list"></div>
+</div>
+</div>
+
+
+<div class="overlay_wrapper" id="subscribe_overlay_wrapper">
+<div class="overlay" id="subscribe_overlay">
+  <div class="overlay_close">[<a href="#" onclick="closeSubscribe(); return false;">close</a>]</div>
+  <div id="subscribe_form">
+    <div>
+      Enter your mobile phone number &amp; we'll send you a text message whenever a new event is added for {{person['title']}} {{person['lastname']}}.
+    </div>
+    <br/>
+    <center>
+      <form action="/subscribe_sms" method="POST">
+        <input type="hidden" name="legislator_id" id="legislator_id" value="{{person['crp_id']}}"/>
+        <input type="text" name="subscribe_number" id="subscribe_number" placeholder="(404) 555-1234"/>
+       <input type="submit" value="Subscribe"/>
+      </form>
+     <a id="subscribe_cancel" href="#" onclick="closeSubscribe(); return false;">Cancel</a>
+   </center>
+ <div id="subscribe_terms">
+        Standard SMS text messaging rates apply per your carrier.<br/>
+        Stop anytime by responding to us with 'STOP'.
+ </div>
+<div style="text-align: center;">
+  <a href="http://www.twilio.com/" target="_blank" style="text: decoration: none; display: inline-block; width: 166px; height: 0; overflow: hidden; padding-top: 31px; background: url(http://www.twilio.com/packages/company/img/logos_icon_poweredbysmall.png) no-repeat;">powered by twilio™</a>
+</div>
+ </div>
 </div>
 </div>
 

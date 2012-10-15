@@ -270,7 +270,16 @@ def load_legislators(zipcode):
         # print("LEGS FROM CACHE")
     return legislators
 
+@app.route('/subscribe_sms', methods=['POST'])
+def subscribe_sms():
+    phone_number = request.form.get("subscribe_number", None)
+    legislator_id = request.form.get("legislator_id", None)
 
+    if phone_number and legislator_id:
+        # SAVE PHONE NUMBER SOMEWHERES
+        return render_template('subscribe_result.html', success=True)
+    else:
+        return render_template('subscribe_result.html', success=False)
 
 def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass

@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block title %} {{ title }} {% endblock %}
+
+{% block body %}
+
+{% if success %}
+
+<h2>You have subscribed to get updates on events. Stop anytime by responding 'STOP'</h2>
+
+{% else %}
+
+<h2>Sorry, you need to enter your phone number to proceed.</h2>
+
+<h3><a href="#" onclick="window.history.back(); return false;">&laquo; back</a></h3>
+
+{% endif %}
+
+{% endblock %}
+
