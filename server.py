@@ -7,6 +7,7 @@ from flask import Response
 from flask import render_template
 from flask import flash
 from flask import jsonify
+from flask.ext.login import LoginManager, login_required, UserMixin, current_user
 from functools import wraps
 import os
 import sunlight
@@ -17,7 +18,7 @@ import csv
 import re
 import pylibmc
 import parsedatetime as pdt
-
+import phonenumbers
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
@@ -58,30 +59,11 @@ OBAMA_CID = 'N00009638'
 
 sunlight.config.API_KEY = app.config['SUNLIGHT_API_KEY']
 
+login_manager = LoginManager()
+login_manager.setup_app(app)
 
 from twilio.rest import TwilioRestClient
 client = TwilioRestClient()
-
-
-@app.route('/sms/subscribe', methods=['GET', 'POST'])
-def call_twilio():
-    phone_number = request.args.get('phone_number') #The number to which SMS text messages will be sent
-    legislator_id = request.args.get('to_number') #The legislator's ID, according to Sunlight
-    #TODO make sure the phone number format is correct; Twilio is picky about this.
-
-    subscription = SMSSubscription(phone_number = phone_number, legislator_id = legislator_id)
-    subscription.save()
-
-
-    #Send a confirmation message to that number
-    call = client.sms.messages.create(to=phone_number
-            from_= app.config['TWILIO_OUTGOING'], 
-            body="Thank you for subscribing to LFLN alerts! If you don't want to receive these anymore, reply STOP")
-    
-    #TODO implement 'reply STOP to stop!
-
-    return redirect(url_for('legislators_search'))
-
 
 
 import logging
@@ -445,9 +427,21 @@ def load_legislators(zipcode):
 def subscribe_sms():
     phone_number = request.form.get("subscribe_number", None)
     legislator_id = request.form.get("legislator_id", None)
+    number = phonenumbers.parse(phone_number, 'US')
+    number = phonenumbers.format_number(number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+    app.logger.debug("Sending message to %s" % number)
+    
 
     if phone_number and legislator_id:
         # SAVE PHONE NUMBER SOMEWHERES
+        #TODO make sure the phone number format is correct; Twilio is picky about this.
+        subscription = SMSSubscription(phone_number = number, legislator_id = legislator_id)
+        subscription.save()
+        #Send a confirmation message to that number
+        call = client.sms.messages.create(to=phone_number,
+                from_= app.config['TWILIO_OUTGOING'], 
+                body="Thank you for subscribing to LFLN alerts! If you don't want to receive these anymore, reply STOP")
+        #TODO implement 'reply STOP to stop!
         return render_template('subscribe_result.html', success=True)
     else:
         return render_template('subscribe_result.html', success=False)
