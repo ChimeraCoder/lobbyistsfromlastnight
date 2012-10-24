@@ -7,6 +7,7 @@ from flask import Response
 from flask import render_template
 from flask import flash
 from flask import jsonify
+from flask.ext.login import LoginManager, login_required, UserMixin, current_user
 from functools import wraps
 import os
 import sunlight
@@ -16,14 +17,36 @@ import urllib2
 import csv
 import re
 import pylibmc
+import parsedatetime as pdt
+import phonenumbers
 
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
-app.secret_key = os.getenv("SESSION_SECRET")
+app.secret_key = app.config["SESSION_SECRET"]
 
 from werkzeug.contrib.cache import MemcachedCache
 
 cache = MemcachedCache(['127.0.0.1:11211'])
+
+from flask.ext.wtf import Form, TextField, PasswordField, validators, BooleanField
+
+###HACK THAT FIXES PYMONGO BUG
+#http://stackoverflow.com/questions/10401499/mongokit-importerror-no-module-named-objectid-error
+#TODO remove this once the upstream bug is fixed
+import sys 
+import pymongo
+import bson.objectid
+pymongo.objectid = bson.objectid
+sys.modules["pymongo.objectid"] = bson.objectid
+pymongo.binary = bson.binary
+sys.modules["pymongo.binary"] = bson.binary
+#### END HACK THAT WILL BE REMOVED
+
+cache = pylibmc.Client(servers=[app.config['MEMCACHE_SERVERS']], binary=True)
+cache = MemcachedCache(cache)
+
+from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
+db = MongoAlchemy(app)
 
 MEMCACHED_TIMEOUT = 10 * 60
 MEMCACHED_TIMEOUT_SUNLIGHT = 3 * 60 * 60
@@ -35,6 +58,12 @@ ROMNEY_CID = 'N00000286'
 OBAMA_CID = 'N00009638'
 
 sunlight.config.API_KEY = app.config['SUNLIGHT_API_KEY']
+
+login_manager = LoginManager()
+login_manager.setup_app(app)
+
+from twilio.rest import TwilioRestClient
+client = TwilioRestClient()
 
 
 import logging
@@ -62,6 +91,130 @@ def about():
 @app.route('/contact/')
 def contact():
     return render_template("contact.html")
+
+#This is called *after* the user's password is verified
+#TODO remove the redundant second query and combine it with the first
+@login_manager.user_loader
+def load_user(userid):
+    #TODO check passwords!
+    print("loading user", userid)
+
+    #check the memcached cache first
+    rv = cache.get(userid)
+    if rv is None:
+        rv = MongoUser.query.filter(MongoUser.mongo_id == userid).first()
+        if rv is not None:
+            cache.set(userid, rv, MEMCACHED_TIMEOUT)
+    return rv
+
+def load_user_by_username(username):
+    user_result = MongoUser.query.filter(MongoUser.username == username).first()
+   
+    if user_result is not None:
+        cache.set(str(user_result.mongo_id), user_result, MEMCACHED_TIMEOUT)
+
+    return user_result
+
+
+@app.route('/login/', methods = ["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        #login and validate user
+        login_user(form.user)
+        flash("Logged in successfully")
+        return redirect(request.args.get("next") or url_for("legislators_search"))
+    else:
+
+        return render_template("login.html", form=form)
+
+
+@app.route('/signup/', methods = ["GET" , "POST"])
+def signup():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        print("registering user")
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        confirm = request.form['confirm']
+        zipcode = request.form['zipcode']
+        accept_tos = request.form['accept_tos']
+        new_user = MongoUser(username = username, password = bcrypt.hashpw(password, bcrypt.gensalt()), email = email, zipcode=zipcode, created_at = int(time.time()))
+        new_user.save()
+        return redirect(url_for('welcome'))
+    else:
+        return render_template("signup.html", form=form)
+
+@app.route("/logout/")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('welcome'))
+
+
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return render_template("index.html", flash="unauthorized", intro_text="You need to log in to view this page")
+
+       
+@app.context_processor
+def inject_user_authenticated():
+    return dict(user_authenticated = current_user.is_authenticated())
+   
+
+class SMSSubscription(db.Document):
+    phone_number = db.StringField()
+    legislator_id = db.StringField() #The same one that is used for the /events/<cid> route
+
+class MongoUser(db.Document, UserMixin):
+    username = db.StringField()
+    password = db.StringField()
+    zipcode = db.StringField()
+    email = db.StringField()
+    created_at = db.IntField(required = True)
+    
+    def get_id(self):
+        return str(self.mongo_id)
+
+class RegistrationForm(Form):
+    username = TextField('Username', [validators.Length(min=4, max=25)])
+    email = TextField('Email Address', [validators.Length(min=6, max=35)])
+    zipcode = TextField('Zipcode', [validators.Length(min=5, max=35)])
+    password = PasswordField('New Password', [
+        validators.Required(),
+        validators.EqualTo('confirm', message='Passwords must match')
+        ])
+    confirm = PasswordField('Repeat Password')
+    accept_tos = BooleanField('I accept the TOS', [validators.Required()])
+
+class LoginForm(Form):
+    username = TextField('Username', [validators.Required()])
+    password = PasswordField('Password', [validators.Required()])
+
+    def validate(self):
+        rv = Form.validate(self)
+        if not rv:
+            return False
+
+        #TODO check password
+        user = MongoUser.query.filter(MongoUser.username == self.username.data).first()
+
+        if user is None:
+            return False
+        else:
+            #self.username = user.username
+            entered_password = self.password.data
+            if bcrypt.hashpw(entered_password, user.password) == user.password:
+                #User entered the correct password
+                cache.set(user.get_id(), user, MEMCACHED_TIMEOUT)
+                self.user = user
+                return True
+            else:
+                return False
+
 
 @app.route('/events/<cid>/')
 @app.route('/events/<cid>/<eid>/')
@@ -270,10 +423,32 @@ def load_legislators(zipcode):
         # print("LEGS FROM CACHE")
     return legislators
 
+@app.route('/subscribe_sms', methods=['POST'])
+def subscribe_sms():
+    phone_number = request.form.get("subscribe_number", None)
+    legislator_id = request.form.get("legislator_id", None)
+    number = phonenumbers.parse(phone_number, 'US')
+    number = phonenumbers.format_number(number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+    app.logger.debug("Sending message to %s" % number)
+    
 
+    if phone_number and legislator_id:
+        # SAVE PHONE NUMBER SOMEWHERES
+        #TODO make sure the phone number format is correct; Twilio is picky about this.
+        subscription = SMSSubscription(phone_number = number, legislator_id = legislator_id)
+        subscription.save()
+        #Send a confirmation message to that number
+        call = client.sms.messages.create(to=phone_number,
+                from_= app.config['TWILIO_OUTGOING'], 
+                body="Thank you for subscribing to LFLN alerts! If you don't want to receive these anymore, reply STOP")
+        #TODO implement 'reply STOP to stop!
+        return render_template('subscribe_result.html', success=True)
+    else:
+        return render_template('subscribe_result.html', success=False)
 
 def search(search_query, max_results=MAX_SEARCH_RESULTS):
    pass
 
 if __name__ == '__main__':
+    print("port: ", app.config['PORT'])
     app.run(host='0.0.0.0', port = app.config['PORT'], debug=app.config['APP_DEBUG'])

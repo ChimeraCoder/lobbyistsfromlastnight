@@ -26,3 +26,4 @@ APP_DEBUG = environ.get("APP_DEBUG", False)
 
 APPLICATION_ROOT = environ.get('APPLICATION_ROOT')
 
+SESSION_SECRET = environ.get('SESSION_SECRET')
