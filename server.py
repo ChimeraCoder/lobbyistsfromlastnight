@@ -315,11 +315,8 @@ def suggested_tweets(legislator, event):
             for tweet in row[1:]:
                 suggested_tweets.append(parse_tweet(tweet, event, legislator))
 
-    def nonNone(x):
-        if x: return 1
-        else: return 0
-
-    suggested_tweets = filter(nonNone, suggested_tweets)
+    #Filter out all None (null) tweets
+    suggested_tweets = filter(lambda x: x is not None, suggested_tweets)
     return suggested_tweets
 
 def telephone_by_cid(cid):
