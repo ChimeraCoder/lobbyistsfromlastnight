@@ -261,11 +261,16 @@ def events_by_cid(cid):
     return events   
 
 def parse_tweet(tweet, event, person):
+    '''Will return None if an error occurs'''
+
    #person will likely be a legislator
     if tweet is "":
         return None
 
-    tweet = tweet.replace("@lawmaker",  "@"+person['twitter_id'])
+    try:
+        tweet = tweet.replace("@lawmaker",  "@"+person['twitter_id'])
+    except TypeError:
+        return None
 
     contribution_regex = re.compile("\$[\d,]+")
     if event['contributions_info']:
