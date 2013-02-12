@@ -261,6 +261,7 @@ def events_by_cid(cid):
     return events   
 
 def parse_tweet(tweet, event, person):
+   #person will likely be a legislator
     if tweet is "":
         return None
 
@@ -285,6 +286,11 @@ def parse_tweet(tweet, event, person):
     return tweet
 
 def suggested_tweets(legislator, event):
+
+    #If a null legislator is provided, return an empty list
+    if legislator is None:
+        return []
+
     suggested_tweets = []
     tweets_csv = csv.reader(open('tweets.tsv', 'rb'), delimiter='\t')
     for row in tweets_csv:
